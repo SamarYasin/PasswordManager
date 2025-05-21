@@ -173,7 +173,7 @@ jobs:
             Artifacts:
             - Ktlint Report: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts
             - APK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts
-          to: your-real-email@gmail.com  # Replace with actual email
+          to: samar.m.yasin@gmail.com
           from: GitHub Actions
           attach_files: |
             app/build/outputs/apk/debug/app-debug.apk
