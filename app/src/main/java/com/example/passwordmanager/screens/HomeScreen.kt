@@ -2,7 +2,13 @@ package com.example.passwordmanager.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,6 +61,21 @@ fun HomeScreen(
     onLogout: () -> Unit = {}
 ) {
     BaseScreen(modifier = modifier) {
+
+        FloatingActionButton(
+            modifier = modifier
+                .size(34.dp),
+            onClick = {
+
+            },
+            shape = FloatingActionButtonDefaults.smallShape,
+            containerColor = FloatingActionButtonDefaults.containerColor,
+            contentColor = FloatingActionButtonDefaults.containerColor,
+            elevation = FloatingActionButtonDefaults.elevation(8.dp)
+        ){
+            Icon(Icons.Default.Add, contentDescription = "Add")
+        }
+
         LazyColumn(modifier = Modifier.padding(16.dp)) {
             items(items.size) { index ->
                 val item = items[index]
