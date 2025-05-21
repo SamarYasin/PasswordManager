@@ -2,6 +2,11 @@ name: Android CI (Lint + Test + Build + Email)
 
 on: push
 
+permissions:
+  contents: read
+  actions: read  # Needed for downloading actions
+  packages: read # Needed for artifact uploads
+  
 jobs:
   lint:
     name: Lint Code
