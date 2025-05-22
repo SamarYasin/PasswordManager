@@ -94,7 +94,7 @@ jobs:
       pull-requests: read
     steps:
       - uses: actions/checkout@v4
-      - uses: eps1lon/actions-check-conflict@v2
+      - uses: eps1lon/actions-check-conflict@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
