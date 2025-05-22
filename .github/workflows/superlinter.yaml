@@ -4,8 +4,8 @@ on: push
 
 permissions:
   contents: read
-  actions: read  # Needed for downloading actions
-  packages: read # Needed for artifact uploads
+  actions: read
+  packages: read
   
 jobs:
   lint:
@@ -93,17 +93,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required to get full git history for conflict checking
+          fetch-depth: 0
 
       - name: Check for merge conflicts
         run: |
-          # Check for unmerged files (<<<<<<< HEAD markers)
-          if git grep -l '<<<<<<<' -- ':!*.md' ':!*.txt'; then
+          # Exclude specific files that might contain conflict markers intentionally
+          if git grep -l '<<<<<<<' -- ':!.github/workflows/superlinter.yaml' ':!*.md' ':!*.txt'; then
             echo "::error::Merge conflicts detected!"
             exit 1
           fi
           
-          # Check for rebase conflicts
           if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ]; then
             echo "::error::Rebase in progress - conflicts may exist"
             exit 1
@@ -188,5 +187,4 @@ jobs:
             - APK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts
           to: samar.m.yasin@gmail.com
           from: GitHub Actions
-          attach_files: |
-            app/build/outputs/apk/debug/app-debug.apk
+          attachments: app/build/outputs/apk/debug/app-debug.apk
