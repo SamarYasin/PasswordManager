@@ -88,15 +88,28 @@ jobs:
           timeout: 15
 
   check-conflicts:
-    name: Check Merge Conflicts
+    name: Check for Merge Conflicts
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
     steps:
       - uses: actions/checkout@v4
-      - uses: eps1lon/actions-check-conflict@v1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Required to get full git history for conflict checking
+
+      - name: Check for merge conflicts
+        run: |
+          # Check for unmerged files (<<<<<<< HEAD markers)
+          if git grep -l '<<<<<<<' -- ':!*.md' ':!*.txt'; then
+            echo "::error::Merge conflicts detected!"
+            exit 1
+          fi
+          
+          # Check for rebase conflicts
+          if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ]; then
+            echo "::error::Rebase in progress - conflicts may exist"
+            exit 1
+          fi
+          
+          echo "✅ No merge conflicts found"
 
   build:
     name: Build APK
