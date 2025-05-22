@@ -26,23 +26,23 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
-            applicationIdSuffix = ".debug"
+//            applicationIdSuffix = ".debug"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
 
-        release {
-            isMinifyEnabled = false
-            isShrinkResources = false
-            isDebuggable = false
-            applicationIdSuffix = ".release"
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+//        release {
+//            isMinifyEnabled = false
+//            isShrinkResources = false
+//            isDebuggable = false
+//            applicationIdSuffix = ".release"
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//        }
 
     }
 
