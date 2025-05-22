@@ -8,6 +8,7 @@ class CredentialEntity {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L
 
+    // TODO: Check if i need mobile number and name
     var entryName: String = ""
     var name: String = ""
     var password: String = ""

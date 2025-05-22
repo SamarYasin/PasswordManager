@@ -1,8 +1,9 @@
 package com.example.passwordmanager.screens
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ fun RouteHomeScreen(
     viewModel: PasswordManagerViewModel,
     onEditEntry: (EntryModel) -> Unit = {},
     onCopyPassword: (String) -> Unit = {},
+    onAddEntry : () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
 
@@ -48,6 +51,7 @@ fun RouteHomeScreen(
         items = credentialList,
         onEditEntry = onEditEntry,
         onLogout = onLogout,
+        onAddEntry = onAddEntry,
         onCopyPassword = onCopyPassword
     )
 }
@@ -58,39 +62,50 @@ fun HomeScreen(
     items: List<EntryModel> = emptyList(),
     onEditEntry: (EntryModel) -> Unit = {},
     onCopyPassword: (String) -> Unit = {},
+    onAddEntry : () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
+
     BaseScreen(modifier = modifier) {
 
-        FloatingActionButton(
+        Column(
             modifier = modifier
-                .size(34.dp),
-            onClick = {
+                .fillMaxSize()
+        ) {
 
-            },
-            shape = FloatingActionButtonDefaults.smallShape,
-            containerColor = FloatingActionButtonDefaults.containerColor,
-            contentColor = FloatingActionButtonDefaults.containerColor,
-            elevation = FloatingActionButtonDefaults.elevation(8.dp)
-        ){
-            Icon(Icons.Default.Add, contentDescription = "Add")
-        }
-
-        LazyColumn(modifier = Modifier.padding(16.dp)) {
-            items(items.size) { index ->
-                val item = items[index]
-                EntryItem(
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    item = item,
-                    onEditEntry = {
-                        onEditEntry(item)
-                    },
-                    onCopyPassword = {
-                        onCopyPassword(item.password)
-                    }
-                )
+            LazyColumn(modifier = Modifier.padding(16.dp)) {
+                items(items.size) { index ->
+                    val item = items[index]
+                    EntryItem(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        item = item,
+                        onEditEntry = {
+                            onEditEntry(item)
+                        },
+                        onCopyPassword = {
+                            onCopyPassword(item.password)
+                        }
+                    )
+                }
             }
+
+            FloatingActionButton(
+                modifier = modifier
+                    .wrapContentSize()
+                    .align(Alignment.End),
+                onClick = {
+                    onAddEntry.invoke()
+                },
+                shape = FloatingActionButtonDefaults.smallShape,
+                containerColor = FloatingActionButtonDefaults.containerColor,
+                contentColor = FloatingActionButtonDefaults.containerColor,
+                elevation = FloatingActionButtonDefaults.elevation(8.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
+
         }
+
     }
 }
 

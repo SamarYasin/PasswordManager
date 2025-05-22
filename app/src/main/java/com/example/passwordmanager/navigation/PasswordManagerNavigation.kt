@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.passwordmanager.screens.RouteAddEntryScreen
 import com.example.passwordmanager.screens.RouteForgotPasswordScreen
 import com.example.passwordmanager.screens.RouteHomeScreen
 import com.example.passwordmanager.screens.RouteSignInScreen
@@ -59,6 +60,13 @@ fun PasswordManagerNavigation(navController: NavHostController, viewModel: Passw
                             inclusive = true
                         }
                     }
+                }
+            )
+        }
+        composable(Routes.ADD_ENTRY.route) {
+            RouteAddEntryScreen(
+                onAddEntry = {
+                    // Handle add entry action
                 }
             )
         }
