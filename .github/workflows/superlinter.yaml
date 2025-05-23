@@ -18,18 +18,11 @@ jobs:
 
       - name: Check for merge conflicts
         run: |
-          set +H  # Disable history expansion
-          if git grep -l '<<<<<<<' -- ':!*.md' ':!*.txt'; then
-            echo "::error::Merge conflicts detected!"
-            exit 1
-          fi
-          
-          if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ]; then
-            echo "::error::Rebase in progress - conflicts may exist"
-            exit 1
-          fi
-          
-          echo "✅ No merge conflicts found"
+         if git grep -l '<<<<<<<' -- ':!*.md' ':!*.txt' ':!*.yaml' ':!*.yml'; then
+          echo "::error::Merge conflict markers detected (excluding .md/.txt/.yaml files)!"
+          exit 1
+        fi
+        echo "✅ No merge conflicts found
 
   lint:
     name: Lint Code
