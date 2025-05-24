@@ -26,23 +26,23 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
-//            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ".debug"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
 
-//        release {
-//            isMinifyEnabled = false
-//            isShrinkResources = false
-//            isDebuggable = false
-//            applicationIdSuffix = ".release"
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
-//        }
+        release {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = false
+            applicationIdSuffix = ".release"
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
 
     }
 
@@ -96,10 +96,10 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
-    implementation(libs.android.database.sqlcipher)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":presentation:view"))
+    implementation(project(":presentation:style"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -108,5 +108,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(platform(libs.androidx.compose.bom))
 
 }

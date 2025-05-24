@@ -4,15 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.passwordmanager.screens.RouteAddEntryScreen
-import com.example.passwordmanager.screens.RouteForgotPasswordScreen
-import com.example.passwordmanager.screens.RouteHomeScreen
-import com.example.passwordmanager.screens.RouteSignInScreen
-import com.example.passwordmanager.screens.RouteSignUpScreen
-import com.example.passwordmanager.viewModel.PasswordManagerViewModel
+import com.example.view.RouteAddEntryScreen
+import com.example.view.RouteForgotPasswordScreen
+import com.example.view.RouteHomeScreen
+import com.example.view.RouteSignInScreen
+import com.example.view.RouteSignUpScreen
 
 @Composable
-fun PasswordManagerNavigation(navController: NavHostController, viewModel: PasswordManagerViewModel) {
+fun PasswordManagerNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Routes.SIGN_IN.route) {
         composable(Routes.SIGN_UP.route) {
             RouteSignUpScreen (
@@ -46,7 +45,6 @@ fun PasswordManagerNavigation(navController: NavHostController, viewModel: Passw
         }
         composable(Routes.HOME.route) {
             RouteHomeScreen(
-                viewModel = viewModel,
                 onEditEntry = {
                     // Handle edit entry action
                 },

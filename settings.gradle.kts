@@ -8,6 +8,7 @@ pluginManagement {
                 includeGroup("com.google.dagger")
             }
         }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -22,3 +23,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "PasswordManager"
 include(":app")
+include(":data")
+include(":domain")
+include(":presentation:component")
+include(":presentation:view")
+include(":presentation:style")
