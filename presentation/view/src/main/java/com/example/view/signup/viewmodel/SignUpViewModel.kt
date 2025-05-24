@@ -1,4 +1,4 @@
-package com.example.view.signup
+package com.example.view.signup.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

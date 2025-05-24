@@ -113,7 +113,7 @@ fun SignInScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    email = it
                 }
             )
 
@@ -142,7 +142,7 @@ fun SignInScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    password = it
                 }
             )
 

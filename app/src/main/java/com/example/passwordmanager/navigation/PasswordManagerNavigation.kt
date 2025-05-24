@@ -8,7 +8,7 @@ import com.example.view.addEntry.RouteAddEntryScreen
 import com.example.view.forgetPassword.RouteForgotPasswordScreen
 import com.example.view.home.RouteHomeScreen
 import com.example.view.signin.RouteSignInScreen
-import com.example.view.signup.RouteSignUpScreen
+import com.example.view.signup.view.RouteSignUpScreen
 
 @Composable
 fun PasswordManagerNavigation(navController: NavHostController) {

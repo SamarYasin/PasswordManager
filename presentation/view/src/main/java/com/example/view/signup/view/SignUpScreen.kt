@@ -1,4 +1,4 @@
-package com.example.view.signup
+package com.example.view.signup.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -29,6 +29,7 @@ import com.example.component.FullWidthButton
 import com.example.component.NameTextField
 import com.example.component.PasswordTextField
 import com.example.component.PhoneNumberTextField
+import com.example.view.signup.model.SignUpScreenModel
 
 @Composable
 fun RouteSignUpScreen(
@@ -39,7 +40,10 @@ fun RouteSignUpScreen(
     SignUpScreen(
         modifier = modifier,
         onNavigateToSignIn = onNavigateToSignIn,
-        onSignUpResult = onSignUpResult
+        onSignUpResult = onSignUpResult,
+        onNextBtnClick = { signUpScreenModel: SignUpScreenModel ->
+
+        }
     )
 }
 
@@ -47,13 +51,15 @@ fun RouteSignUpScreen(
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     onNavigateToSignIn: () -> Unit = {},
+    onNextBtnClick: (SignUpScreenModel) -> Unit = {},
     onSignUpResult: () -> Unit = {}
 ) {
 
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var repeatPassword by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
 
     BaseScreen(modifier = modifier.fillMaxSize()) {
         Column(
@@ -113,7 +119,7 @@ fun SignUpScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    name = it
                 }
             )
 
@@ -142,7 +148,7 @@ fun SignUpScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    email = it
                 }
             )
 
@@ -171,7 +177,7 @@ fun SignUpScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    password = it
                 }
             )
 
@@ -200,7 +206,7 @@ fun SignUpScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    confirmPassword = it
                 }
             )
 
@@ -229,7 +235,7 @@ fun SignUpScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    phoneNumber = it
                 }
             )
 
@@ -239,11 +245,11 @@ fun SignUpScreen(
                     .height(12.dp)
             )
 
-            Row (
+            Row(
                 modifier = Modifier
                     .wrapContentSize()
                     .align(Alignment.End)
-            ){
+            ) {
 
                 AppHelperText(
                     text = "Already have an account?",
@@ -274,7 +280,15 @@ fun SignUpScreen(
                     .height(42.dp),
                 text = "Sign Up",
                 onClick = {
-                    onNavigateToSignIn.invoke()
+                    onNextBtnClick.invoke(
+                        SignUpScreenModel(
+                            name = name,
+                            email = email,
+                            password = password,
+                            confirmPassword = confirmPassword,
+                            phoneNumber = phoneNumber
+                        )
+                    )
                 }
             )
 
@@ -295,6 +309,9 @@ fun PreviewSignUpScreen(
         },
         onNavigateToSignIn = {
             // Handle navigation to sign in
+        },
+        onNextBtnClick = {
+
         }
     )
 }

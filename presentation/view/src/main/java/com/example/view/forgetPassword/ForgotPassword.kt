@@ -31,7 +31,6 @@ fun RouteForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn:
         modifier = modifier,
         onNavigateToSignIn = onNavigateToSignIn
     )
-
 }
 
 @Composable
@@ -98,7 +97,7 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    email = it
                 }
             )
 
@@ -127,7 +126,7 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    phoneNumber = it
                 }
             )
 
