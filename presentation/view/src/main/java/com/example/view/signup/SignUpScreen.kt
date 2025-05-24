@@ -1,4 +1,4 @@
-package com.example.view
+package com.example.view.signup
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

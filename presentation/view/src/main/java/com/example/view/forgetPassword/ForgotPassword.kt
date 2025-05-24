@@ -1,9 +1,6 @@
-package com.example.view
+package com.example.view.forgetPassword
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,39 +18,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.component.AppHelperText
 import com.example.component.AppScreenTitleText
 import com.example.component.AppViewNameText
 import com.example.component.BaseScreen
 import com.example.component.EmailTextField
 import com.example.component.FullWidthButton
-import com.example.component.PasswordTextField
+import com.example.component.PhoneNumberTextField
 
 @Composable
-fun RouteSignInScreen(
-    modifier: Modifier = Modifier,
-    onSignInResult: () -> Unit = {},
-    onNavigateToSignUp: () -> Unit = {},
-    onForgotPassword: () -> Unit = {}
-) {
-    SignInScreen(
+fun RouteForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -> Unit = {}) {
+    ForgotPasswordScreen(
         modifier = modifier,
-        onSignInResult = onSignInResult,
-        onNavigateToSignUp = onNavigateToSignUp,
-        onForgotPassword = onForgotPassword
+        onNavigateToSignIn = onNavigateToSignIn
     )
+
 }
 
 @Composable
-fun SignInScreen(
-    modifier: Modifier = Modifier,
-    onNavigateToSignUp: () -> Unit = {},
-    onSignInResult: () -> Unit = {},
-    onForgotPassword: () -> Unit = {}
-) {
+fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -> Unit = {}) {
 
     var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
 
     BaseScreen(modifier = modifier.fillMaxSize()) {
         Column(
@@ -63,13 +48,13 @@ fun SignInScreen(
         ) {
 
             Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.1F)
-                    )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.1F)
+            )
 
             AppScreenTitleText(
-                text = "Sign In",
+                text = "Forgot Password",
                 modifier = Modifier
                     .wrapContentSize()
                     .align(Alignment.CenterHorizontally)
@@ -82,7 +67,7 @@ fun SignInScreen(
             )
 
             AppViewNameText(
-                text = "Lets get you signed in",
+                text = "Don't worry, we will send you a link to reset your password",
                 modifier = Modifier
                     .wrapContentSize()
                     .align(Alignment.CenterHorizontally)
@@ -124,7 +109,7 @@ fun SignInScreen(
             )
 
             AppViewNameText(
-                text = "Password",
+                text = "Phone Number",
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(start = 12.dp)
@@ -137,7 +122,7 @@ fun SignInScreen(
                     .height(8.dp)
             )
 
-            PasswordTextField(
+            PhoneNumberTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(42.dp),
@@ -145,52 +130,6 @@ fun SignInScreen(
                     // Handle email input
                 }
             )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(12.dp)
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Row(
-                    modifier = Modifier
-                        .wrapContentSize()
-                ) {
-
-                    AppHelperText(
-                        text = "Dont have an account?",
-                        modifier = Modifier
-                            .wrapContentSize()
-                    )
-
-                    AppHelperText(
-                        text = "  Sign Up",
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .clickable {
-                                onNavigateToSignUp.invoke()
-                            }
-                    )
-
-                }
-
-                AppHelperText(
-                    text = "Forgot Password?",
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .clickable {
-                            onForgotPassword.invoke()
-                        }
-                )
-
-            }
 
             Spacer(
                 modifier = Modifier
@@ -204,28 +143,23 @@ fun SignInScreen(
                     .height(42.dp),
                 text = "Sign In",
                 onClick = {
-                    onSignInResult.invoke()
+                    onNavigateToSignIn.invoke()
                 }
             )
 
         }
     }
+
 }
 
 @Preview(showBackground = true, showSystemUi = true, apiLevel = 34)
 @Composable
-fun PreviewSignInScreen(modifier: Modifier = Modifier) {
-    SignInScreen(
+fun PreviewForgotPasswordScreen(modifier: Modifier = Modifier) {
+    ForgotPasswordScreen(
         modifier = modifier
             .fillMaxSize(),
-        onSignInResult = {
-            // Handle sign in result
-        },
-        onNavigateToSignUp = {
-            // Handle navigation to sign up
-        },
-        onForgotPassword = {
-            // Handle forgot password
+        onNavigateToSignIn = {
+            // Handle navigation to Sign In screen
         }
     )
 }

@@ -1,4 +1,4 @@
-package com.example.view
+package com.example.view.editEntry
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

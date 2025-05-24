@@ -1,4 +1,4 @@
-package com.example.view
+package com.example.view.home
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.component.AppViewNameText
 import com.example.component.ClickableIcons
 import com.example.domain.entity.CredentialResponseEntity
+import com.example.view.R
 import java.util.Date
 
 @Composable

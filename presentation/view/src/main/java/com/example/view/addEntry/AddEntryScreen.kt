@@ -1,4 +1,4 @@
-package com.example.view
+package com.example.view.addEntry
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,10 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,25 +18,33 @@ import com.example.component.AppScreenTitleText
 import com.example.component.AppViewNameText
 import com.example.component.BaseScreen
 import com.example.component.EmailTextField
-import com.example.component.FullWidthButton
+import com.example.component.NameTextField
+import com.example.component.PasswordTextField
 import com.example.component.PhoneNumberTextField
+import com.example.domain.entity.CredentialResponseEntity
 
 @Composable
-fun RouteForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -> Unit = {}) {
-    ForgotPasswordScreen(
+fun RouteAddEntryScreen(
+    modifier: Modifier = Modifier,
+    onAddEntry: (CredentialResponseEntity) -> Unit = {}
+) {
+    AddEntryScreen(
         modifier = modifier,
-        onNavigateToSignIn = onNavigateToSignIn
+        onAddEntry = onAddEntry
     )
-
 }
 
 @Composable
-fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -> Unit = {}) {
+fun AddEntryScreen(
+    modifier: Modifier = Modifier,
+    onAddEntry: (CredentialResponseEntity) -> Unit = {}
+) {
 
-    var email by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
+    BaseScreen(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
 
-    BaseScreen(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,7 +58,7 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -
             )
 
             AppScreenTitleText(
-                text = "Forgot Password",
+                text = "New Entry",
                 modifier = Modifier
                     .wrapContentSize()
                     .align(Alignment.CenterHorizontally)
@@ -67,10 +71,56 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -
             )
 
             AppViewNameText(
-                text = "Don't worry, we will send you a link to reset your password",
+                text = "Title",
                 modifier = Modifier
                     .wrapContentSize()
-                    .align(Alignment.CenterHorizontally)
+                    .padding(start = 12.dp)
+                    .align(Alignment.Start)
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
+
+            NameTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(42.dp),
+                hint = "Enter title",
+                onValueChange = {
+                    // Handle email input
+                }
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp)
+            )
+
+            AppViewNameText(
+                text = "Name",
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(start = 12.dp)
+                    .align(Alignment.Start)
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
+
+            NameTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(42.dp),
+                onValueChange = {
+                    // Handle email input
+                }
             )
 
             Spacer(
@@ -105,11 +155,40 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(12.dp)
+                    .height(20.dp)
             )
 
             AppViewNameText(
-                text = "Phone Number",
+                text = "Password",
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(start = 12.dp)
+                    .align(Alignment.Start)
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
+
+            PasswordTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(42.dp),
+                onValueChange = {
+                    // Handle email input
+                }
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp)
+            )
+
+            AppViewNameText(
+                text = "Mobile Number",
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(start = 12.dp)
@@ -131,35 +210,22 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier, onNavigateToSignIn: () -
                 }
             )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.1F)
-            )
-
-            FullWidthButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
-                text = "Sign In",
-                onClick = {
-                    onNavigateToSignIn.invoke()
-                }
-            )
-
         }
+
     }
 
 }
 
-@Preview(showBackground = true, showSystemUi = true, apiLevel = 34)
 @Composable
-fun PreviewForgotPasswordScreen(modifier: Modifier = Modifier) {
-    ForgotPasswordScreen(
+@Preview(showBackground = true, showSystemUi = true, apiLevel = 34)
+fun PreviewAddEntryScreen(
+    modifier: Modifier = Modifier
+) {
+    AddEntryScreen(
         modifier = modifier
             .fillMaxSize(),
-        onNavigateToSignIn = {
-            // Handle navigation to Sign In screen
+        onAddEntry = {
+            // Handle add entry action
         }
     )
 }
