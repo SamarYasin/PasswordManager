@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.view.addEntry.RouteAddEntryScreen
-import com.example.view.forgetPassword.RouteForgotPasswordScreen
-import com.example.view.home.RouteHomeScreen
-import com.example.view.signin.RouteSignInScreen
-import com.example.view.signup.view.RouteSignUpScreen
+import com.example.view.screen.addEntry.view.RouteAddEntryScreen
+import com.example.view.screen.forgetPassword.view.RouteForgotPasswordScreen
+import com.example.view.screen.home.view.RouteHomeScreen
+import com.example.view.screen.signin.view.RouteSignInScreen
+import com.example.view.screen.signup.view.RouteSignUpScreen
 
 @Composable
 fun PasswordManagerNavigation(navController: NavHostController) {

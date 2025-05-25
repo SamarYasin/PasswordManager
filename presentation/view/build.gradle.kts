@@ -68,6 +68,8 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
+    implementation (libs.androidx.hilt.navigation.compose)
+
     implementation(project(":presentation:component"))
     implementation(project(":presentation:style"))
     implementation(project(":domain"))
