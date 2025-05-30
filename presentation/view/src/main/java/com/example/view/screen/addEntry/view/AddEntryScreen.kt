@@ -22,6 +22,7 @@ import com.example.component.NameTextField
 import com.example.component.PasswordTextField
 import com.example.component.PhoneNumberTextField
 import com.example.domain.entity.CredentialResponseEntity
+import com.example.view.screen.addEntry.model.AddEntryScreenModel
 
 @Composable
 fun RouteAddEntryScreen(
@@ -37,6 +38,7 @@ fun RouteAddEntryScreen(
 @Composable
 fun AddEntryScreen(
     modifier: Modifier = Modifier,
+    onNextBtnClick : (AddEntryScreenModel) -> Unit = {},
     onAddEntry: (CredentialResponseEntity) -> Unit = {}
 ) {
 

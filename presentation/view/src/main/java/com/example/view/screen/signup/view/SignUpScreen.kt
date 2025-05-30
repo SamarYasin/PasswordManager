@@ -1,7 +1,6 @@
 package com.example.view.screen.signup.view
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,9 +31,13 @@ import com.example.component.FullWidthButton
 import com.example.component.NameTextField
 import com.example.component.PasswordTextField
 import com.example.component.PhoneNumberTextField
+import com.example.view.ResultHandler
+import com.example.view.SignUpResult
+import com.example.view.SignUpValidationResult
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.signup.model.SignUpScreenModel
 import com.example.view.screen.signup.viewmodel.SignUpViewModel
+import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun RouteSignUpScreen(
@@ -42,46 +46,88 @@ fun RouteSignUpScreen(
     onNavigateToSignIn: () -> Unit = {},
     onSignUpResult: () -> Unit = {}
 ) {
+
+    val validationResult by signUpViewModel.validationResult.collectAsState(
+        initial = SignUpValidationResult.Idle,
+        context = EmptyCoroutineContext
+    )
+
+    val signUpResult by signUpViewModel.signUpResult.collectAsState(
+        initial = SignUpResult.Idle,
+        context = EmptyCoroutineContext
+    )
+
     SignUpScreen(
         modifier = modifier,
         onNavigateToSignIn = onNavigateToSignIn,
-        onSignUpResult = onSignUpResult,
         onNextBtnClick = { signUpScreenModel: SignUpScreenModel ->
-            if (signUpViewModel.validateSignUpForm(
-                    signUpScreenModel
-                )
-            ) {
-                signUpViewModel.signUp(signUpScreenModel)
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center)
-                ) {
-                    AlertDialogMessage(
-                        modifier = Modifier
-                            .wrapContentSize(),
-                        onDismissRequest = {
-
-                        },
-                        onConfirmation = {
-                            // Handle confirmation action
-                        },
-                        dialogTitle = "Validation Error",
-                        dialogText = "Please fill all the fields correctly."
-                    )
-                }
-            }
+            signUpViewModel.validateSignUpForm(
+                signUpScreenModel
+            )
         }
     )
+
+    ResultHandler(
+        result = validationResult,
+        onSuccess = {
+            signUpViewModel.signUp()
+        },
+        onError = {
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+
+                },
+                onConfirmation = {
+
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        },
+        onLoading = {
+            // TODO: Attach Loader here
+        },
+        onIdle = {
+            // TODO: Do nothing on idle state
+        }
+    )
+
+    ResultHandler(
+        result = signUpResult,
+        onSuccess = {
+            onSignUpResult.invoke()
+        },
+        onError = {
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+
+                },
+                onConfirmation = {
+
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        },
+        onLoading = {
+            // TODO: Attach Loader here
+        },
+        onIdle = {
+            // TODO: Do nothing on idle state
+        }
+    )
+
 }
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     onNavigateToSignIn: () -> Unit = {},
-    onNextBtnClick: (SignUpScreenModel) -> Unit = {},
-    onSignUpResult: () -> Unit = {}
+    onNextBtnClick: (SignUpScreenModel) -> Unit = {}
 ) {
 
     var name by remember { mutableStateOf("") }
@@ -333,9 +379,6 @@ fun PreviewSignUpScreen(
 ) {
     SignUpScreen(
         modifier = modifier.fillMaxSize(),
-        onSignUpResult = {
-            // Handle sign up result
-        },
         onNavigateToSignIn = {
             // Handle navigation to sign in
         },

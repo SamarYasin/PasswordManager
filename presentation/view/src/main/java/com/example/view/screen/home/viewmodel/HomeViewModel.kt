@@ -1,18 +1,28 @@
 package com.example.view.screen.home.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.CredentialResponseEntity
 import com.example.domain.usecase.GetCredentialsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getCredentialsUseCase: GetCredentialsUseCase
 ) : ViewModel(){
-    // ViewModel logic for Home can be added here
-    // For example, you can handle fetching data, managing UI state, etc.
 
-    // Example function to fetch home data
-    fun fetchHomeData() {
-        // Implement logic to fetch home data here
-        // This could involve calling a repository or use case to get the necessary data
+    private val _credentials = MutableStateFlow<List<CredentialResponseEntity>>(emptyList())
+    val credentials: Flow<List<CredentialResponseEntity>> get() = _credentials
+
+    fun getCredentials() {
+        viewModelScope.launch {
+            // Fetch credentials from the use case
+            _credentials.value = getCredentialsUseCase.getCredentials()
+        }
     }
+
 }

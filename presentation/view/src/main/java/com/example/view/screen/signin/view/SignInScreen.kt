@@ -2,7 +2,6 @@ package com.example.view.screen.signin.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,10 +30,13 @@ import com.example.component.BaseScreen
 import com.example.component.EmailTextField
 import com.example.component.FullWidthButton
 import com.example.component.PasswordTextField
+import com.example.view.ResultHandler
+import com.example.view.SignInResult
+import com.example.view.SignUpValidationResult
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.signin.model.SignInScreenModel
 import com.example.view.screen.signin.viewmodel.SignInViewModel
-import com.example.view.screen.signup.model.SignUpScreenModel
+import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun RouteSignInScreen(
@@ -43,45 +46,88 @@ fun RouteSignInScreen(
     onNavigateToSignUp: () -> Unit = {},
     onForgotPassword: () -> Unit = {}
 ) {
+
+    val validationResult by signInViewModel.validationResult.collectAsState(
+        initial = SignUpValidationResult.Idle,
+        context = EmptyCoroutineContext
+    )
+
+    val signInResult by signInViewModel.signInResult.collectAsState(
+        initial = SignInResult.Idle,
+        context = EmptyCoroutineContext
+    )
+
     SignInScreen(
         modifier = modifier,
-        onSignInResult = onSignInResult,
         onNavigateToSignUp = onNavigateToSignUp,
         onForgotPassword = onForgotPassword,
         onNextBtnClick = { signInScreenModel: SignInScreenModel ->
-            if (signInViewModel.validateSignInForm(signInScreenModel)) {
-                signInViewModel.signIn(
-                    signInScreenModel
-                )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center)
-                ) {
-                    AlertDialogMessage(
-                        modifier = Modifier
-                            .wrapContentSize(),
-                        onDismissRequest = {
-
-                        },
-                        onConfirmation = {
-                            // Handle confirmation action
-                        },
-                        dialogTitle = "Validation Error",
-                        dialogText = "Please fill all the fields correctly."
-                    )
-                }
-            }
+            signInViewModel.validateSignInForm(
+                signInScreenModel
+            )
         }
     )
+
+    ResultHandler(
+        result = validationResult,
+        onSuccess = {
+            signInViewModel.signIn()
+        },
+        onError = {
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+
+                },
+                onConfirmation = {
+
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        },
+        onLoading = {
+            // TODO: Attach Loader here
+        },
+        onIdle = {
+            // TODO: Do nothing on idle state
+        }
+    )
+
+    ResultHandler(
+        result = signInResult,
+        onSuccess = {
+            onSignInResult.invoke()
+        },
+        onError = {
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+
+                },
+                onConfirmation = {
+
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        },
+        onLoading = {
+            // TODO: Attach Loader here
+        },
+        onIdle = {
+            // TODO: Do nothing on idle state
+        }
+    )
+
 }
 
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
     onNavigateToSignUp: () -> Unit = {},
-    onSignInResult: () -> Unit = {},
     onNextBtnClick: (SignInScreenModel) -> Unit = {},
     onForgotPassword: () -> Unit = {}
 ) {
@@ -257,9 +303,6 @@ fun PreviewSignInScreen(modifier: Modifier = Modifier) {
     SignInScreen(
         modifier = modifier
             .fillMaxSize(),
-        onSignInResult = {
-            // Handle sign in result
-        },
         onNavigateToSignUp = {
             // Handle navigation to sign up
         },

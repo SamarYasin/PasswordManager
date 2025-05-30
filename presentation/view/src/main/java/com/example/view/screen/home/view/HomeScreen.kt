@@ -11,30 +11,47 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.component.BaseScreen
 import com.example.domain.entity.CredentialResponseEntity
+import com.example.view.screen.home.viewmodel.HomeViewModel
+import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun RouteHomeScreen(
     modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = hiltViewModel(),
     onEditEntry: (CredentialResponseEntity) -> Unit = {},
     onCopyPassword: (String) -> Unit = {},
     onAddEntry : () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
 
+    val credentials by homeViewModel.credentials.collectAsState(
+        initial = emptyList(),
+        context = EmptyCoroutineContext
+    )
+
+    LaunchedEffect(Unit) {
+        homeViewModel.getCredentials()
+    }
+
     HomeScreen(
         modifier = modifier,
-        items = listOf(),
+        items = credentials,
         onEditEntry = onEditEntry,
         onLogout = onLogout,
         onAddEntry = onAddEntry,
         onCopyPassword = onCopyPassword
     )
+
 }
 
 @Composable
@@ -47,10 +64,10 @@ fun HomeScreen(
     onLogout: () -> Unit = {}
 ) {
 
-    BaseScreen(modifier = modifier) {
+    BaseScreen(modifier = modifier.fillMaxSize()) {
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
         ) {
 

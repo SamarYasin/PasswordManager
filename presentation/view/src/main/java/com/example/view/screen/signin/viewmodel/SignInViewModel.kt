@@ -1,10 +1,13 @@
 package com.example.view.screen.signin.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.view.SignInResult
+import com.example.view.SignInValidationResult
 import com.example.view.screen.signin.model.SignInScreenModel
-import com.example.view.screen.signup.model.SignUpScreenModel
 import com.example.view.validation.CustomValidationClass
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -12,21 +15,36 @@ class SignInViewModel @Inject constructor(
     private val customValidationClass: CustomValidationClass
 ) : ViewModel() {
 
-    fun validateSignInForm(signInScreenModel: SignInScreenModel): Boolean {
-        return customValidationClass.isEmailValid(signInScreenModel.email) &&
+    private val _signInScreenModel = MutableStateFlow(SignInScreenModel())
+
+    private val _validationResult =
+        MutableStateFlow<SignInValidationResult>(SignInValidationResult.Idle)
+    val validationResult: Flow<SignInValidationResult> get() = _validationResult
+
+    private val _signInResult = MutableStateFlow<SignInResult>(SignInResult.Idle)
+    val signInResult: Flow<SignInResult> get() = _signInResult
+
+    fun validateSignInForm(signInScreenModel: SignInScreenModel) {
+        _signInScreenModel.value = signInScreenModel
+        val isValid = customValidationClass.isEmailValid(signInScreenModel.email) &&
                 customValidationClass.isPasswordValid(signInScreenModel.password)
+
+        if (isValid){
+            _validationResult.value = SignInValidationResult.Success("Validation successful")
+        } else {
+            _validationResult.value = SignInValidationResult.Error("Validation failed")
+        }
+
     }
 
-    fun signIn(signInScreenModel: SignInScreenModel) {
-        // Implement sign-in logic here
-        // This could involve calling a repository or use case to authenticate the user
-    }
-
-    sealed class SignInResult {
-        data class Success(val message: String) : SignInResult()
-        data class Error(val message: String) : SignInResult()
-        object Loading : SignInResult()
-        object Idle : SignInResult()
+    // TODO: Fix it to handle actual sign-in logic
+    fun signIn() {
+        if (_validationResult.value is SignInValidationResult.Success) {
+            // Simulate a sign-in process
+            _signInResult.value = SignInResult.Success("Sign-in successful")
+        } else {
+            _signInResult.value = SignInResult.Error("Sign-in failed due to validation errors")
+        }
     }
 
 }
