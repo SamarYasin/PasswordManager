@@ -1,13 +1,16 @@
 package com.example.view.screen.forgetPassword.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.view.ForgetPasswordResult
 import com.example.view.ForgetPasswordValidationResult
+import com.example.view.SignUpResult
 import com.example.view.screen.forgetPassword.model.ForgotPasswordScreenModel
 import com.example.view.validation.CustomValidationClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,26 +29,37 @@ class ForgetPasswordViewModel @Inject constructor(
     val forgotPasswordResult: Flow<ForgetPasswordResult> get() = _forgotPasswordResult
 
     fun validateForgetPasswordForm(forgetPasswordScreenModel: ForgotPasswordScreenModel) {
-        val isValid = customValidationClass.isEmailValid(forgetPasswordScreenModel.email) &&
-                customValidationClass.isPhoneNumberValid(forgetPasswordScreenModel.phoneNumber)
+        viewModelScope.launch {
+            _forgotPasswordScreenModel.value = forgetPasswordScreenModel
+            val isValid = customValidationClass.isEmailValid(forgetPasswordScreenModel.email) &&
+                    customValidationClass.isPhoneNumberValid(forgetPasswordScreenModel.phoneNumber)
 
-        if (isValid){
-            _validationResult.value = ForgetPasswordValidationResult.Success("Validation successful")
-        } else {
-            _validationResult.value = ForgetPasswordValidationResult.Error("Validation failed")
+            if (isValid){
+                _validationResult.value = ForgetPasswordValidationResult.Success("Validation successful")
+            } else {
+                _validationResult.value = ForgetPasswordValidationResult.Error("Validation failed")
+            }
         }
-
     }
 
     // TODO: Fix it to handle actual sign-in logic
     fun resetPassword() {
-        if (_validationResult.value is ForgetPasswordValidationResult.Success) {
-            // Simulate a password reset operation
-            _forgotPasswordResult.value = ForgetPasswordResult.Success("Password reset link sent successfully")
-        } else {
-            _forgotPasswordResult.value = ForgetPasswordResult.Error("Failed to send password reset link")
+        viewModelScope.launch {
+            if (_validationResult.value is ForgetPasswordValidationResult.Success) {
+                // Simulate a password reset operation
+                _forgotPasswordResult.value = ForgetPasswordResult.Success("Password reset link sent successfully")
+            } else {
+                _forgotPasswordResult.value = ForgetPasswordResult.Error("Failed to send password reset link")
+            }
         }
     }
 
+    fun clearValidationError() {
+        _validationResult.value = ForgetPasswordValidationResult.Idle
+    }
+
+    fun clearForgotPasswordError() {
+        _forgotPasswordResult.value = ForgetPasswordResult.Idle
+    }
 
 }

@@ -2,26 +2,63 @@ package com.example.view.screen.addEntry.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.domain.usecase.AddCredentialUseCase
+import com.example.view.AddEntryResult
+import com.example.view.AddEntryValidationResult
 import com.example.view.screen.addEntry.model.AddEntryScreenModel
-import com.example.view.screen.forgetPassword.model.ForgotPasswordScreenModel
 import com.example.view.validation.CustomValidationClass
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class AddEntryViewModel @Inject constructor(
     private val addCredentialUseCase: AddCredentialUseCase,
     private val customValidationClass: CustomValidationClass
 ) : ViewModel() {
 
-    fun validateAddEntryForm(addEntryScreenModel: AddEntryScreenModel): Boolean {
-        return customValidationClass.isNameValid(addEntryScreenModel.title) &&
+    private val _addEntryScreenModel = MutableStateFlow(AddEntryScreenModel())
+
+    private val _validationResult =
+        MutableStateFlow<AddEntryValidationResult>(AddEntryValidationResult.Idle)
+    val validationResult: Flow<AddEntryValidationResult> get() = _validationResult
+
+    private val _addEntryResult =
+        MutableStateFlow<AddEntryResult>(AddEntryResult.Idle)
+    val addEntryResult: Flow<AddEntryResult> get() = _addEntryResult
+
+    fun validateAddEntryForm(addEntryScreenModel: AddEntryScreenModel) {
+        _addEntryScreenModel.value = addEntryScreenModel
+        val isValid = customValidationClass.isNameValid(addEntryScreenModel.title) &&
                 customValidationClass.isNameValid(addEntryScreenModel.name) &&
                 customValidationClass.isEmailValid(addEntryScreenModel.email) &&
                 customValidationClass.isPasswordValid(addEntryScreenModel.password) &&
                 customValidationClass.isPhoneNumberValid(addEntryScreenModel.phoneNumber)
+
+        if (isValid) {
+            _validationResult.value = AddEntryValidationResult.Success("Validation successful")
+        } else {
+            _validationResult.value = AddEntryValidationResult.Error("Validation failed")
+        }
+
     }
 
-    fun addEntry(title: String, content: String) {
-        // Implement logic to add an entry here
-        // This could involve calling a repository or use case to save the entry
+    // TODO: Fix it to handle actual sign-up logic
+    fun addEntry() {
+        if (_validationResult.value is AddEntryValidationResult.Success) {
+            // Simulate adding an entry
+            _addEntryResult.value = AddEntryResult.Success("Entry added successfully")
+        } else {
+            _addEntryResult.value = AddEntryResult.Error("Cannot add entry, validation failed")
+        }
     }
+
+    fun clearValidationError() {
+        _validationResult.value = AddEntryValidationResult.Idle
+    }
+
+    fun clearAddEntryError() {
+        _addEntryResult.value = AddEntryResult.Idle
+    }
+
 }

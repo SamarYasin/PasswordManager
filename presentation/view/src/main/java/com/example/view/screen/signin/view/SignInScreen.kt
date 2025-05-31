@@ -32,7 +32,7 @@ import com.example.component.FullWidthButton
 import com.example.component.PasswordTextField
 import com.example.view.ResultHandler
 import com.example.view.SignInResult
-import com.example.view.SignUpValidationResult
+import com.example.view.SignInValidationResult
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.signin.model.SignInScreenModel
 import com.example.view.screen.signin.viewmodel.SignInViewModel
@@ -48,7 +48,7 @@ fun RouteSignInScreen(
 ) {
 
     val validationResult by signInViewModel.validationResult.collectAsState(
-        initial = SignUpValidationResult.Idle,
+        initial = SignInValidationResult.Idle,
         context = EmptyCoroutineContext
     )
 
@@ -62,65 +62,72 @@ fun RouteSignInScreen(
         onNavigateToSignUp = onNavigateToSignUp,
         onForgotPassword = onForgotPassword,
         onNextBtnClick = { signInScreenModel: SignInScreenModel ->
-            signInViewModel.validateSignInForm(
-                signInScreenModel
-            )
-        }
-    )
-
-    ResultHandler(
-        result = validationResult,
-        onSuccess = {
-            signInViewModel.signIn()
-        },
-        onError = {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-
-                },
-                onConfirmation = {
-
-                },
-                dialogTitle = "Error",
-                dialogText = "An error occurred"
-            )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
-        }
-    )
-
-    ResultHandler(
-        result = signInResult,
-        onSuccess = {
+//            signInViewModel.validateSignInForm(
+//                signInScreenModel
+//            )
             onSignInResult.invoke()
-        },
-        onError = {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-
-                },
-                onConfirmation = {
-
-                },
-                dialogTitle = "Error",
-                dialogText = "An error occurred"
-            )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
         }
     )
+
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
+    if (validationResult is SignInValidationResult.Error || validationResult is SignInValidationResult.Success) {
+        ResultHandler(
+            result = validationResult,
+            onSuccess = {
+                signInViewModel.signIn()
+            },
+            onError = { model: SignInValidationResult ->
+                AlertDialogMessage(
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        signInViewModel.clearValidationError()
+                    },
+                    onConfirmation = {
+                        signInViewModel.clearValidationError()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = "An error occurred"
+                )
+            },
+            onLoading = {
+                // TODO: Attach Loader here
+            },
+            onIdle = {
+                // TODO: Do nothing on idle state
+            }
+        )
+    }
+
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
+    if (signInResult is SignInResult.Error || signInResult is SignInResult.Success) {
+        ResultHandler(
+            result = signInResult,
+            onSuccess = {
+                onSignInResult.invoke()
+            },
+            onError = { model: SignInResult ->
+                AlertDialogMessage(
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        signInViewModel.clearSignInError()
+                    },
+                    onConfirmation = {
+                        signInViewModel.clearSignInError()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = "An error occurred"
+                )
+            },
+            onLoading = {
+                // TODO: Attach Loader here
+            },
+            onIdle = {
+                // TODO: Do nothing on idle state
+            }
+        )
+    }
 
 }
 

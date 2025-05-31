@@ -39,7 +39,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 @Composable
 fun RouteForgotPasswordScreen(
     modifier: Modifier = Modifier,
-    forgetPasswordViewModel : ForgetPasswordViewModel = hiltViewModel(),
+    forgetPasswordViewModel: ForgetPasswordViewModel = hiltViewModel(),
     onNavigateToSignIn: () -> Unit = {}
 ) {
 
@@ -62,20 +62,21 @@ fun RouteForgotPasswordScreen(
         }
     )
 
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
     ResultHandler(
         result = validationResult,
         onSuccess = {
             forgetPasswordViewModel.resetPassword()
         },
-        onError = {
+        onError = { model: ForgetPasswordValidationResult ->
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
-
+                    forgetPasswordViewModel.clearValidationError()
                 },
                 onConfirmation = {
-
+                    forgetPasswordViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
@@ -89,20 +90,21 @@ fun RouteForgotPasswordScreen(
         }
     )
 
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
     ResultHandler(
         result = forgotPasswordResult,
         onSuccess = {
             onNavigateToSignIn.invoke()
         },
-        onError = {
+        onError = { model: ForgetPasswordResult ->
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
-
+                    forgetPasswordViewModel.clearForgotPasswordError()
                 },
                 onConfirmation = {
-
+                    forgetPasswordViewModel.clearForgotPasswordError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"

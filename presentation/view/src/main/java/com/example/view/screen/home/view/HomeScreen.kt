@@ -1,6 +1,8 @@
 package com.example.view.screen.home.view
 
-import androidx.compose.foundation.layout.Column
+import android.widget.Toast
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -16,6 +18,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,11 +36,12 @@ fun RouteHomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
     onEditEntry: (CredentialResponseEntity) -> Unit = {},
-    onCopyPassword: (String) -> Unit = {},
-    onAddEntry : () -> Unit = {},
+    onAddEntry: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
 
+    val context = LocalContext.current
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
     val credentials by homeViewModel.credentials.collectAsState(
         initial = emptyList(),
         context = EmptyCoroutineContext
@@ -49,7 +57,13 @@ fun RouteHomeScreen(
         onEditEntry = onEditEntry,
         onLogout = onLogout,
         onAddEntry = onAddEntry,
-        onCopyPassword = onCopyPassword
+        onCopyPassword = { password : String ->
+            // TODO: Fix it to handle actual copy to clipboard logic
+             // This is a placeholder for the actual password copy logic
+             // You can use the ClipboardManager to copy the password to clipboard
+//            clipboardManager.setText(ClipEntry(password))
+             Toast.makeText(context, "Password copied to clipboard", Toast.LENGTH_SHORT).show()
+        }
     )
 
 }
@@ -60,18 +74,22 @@ fun HomeScreen(
     items: List<CredentialResponseEntity> = emptyList(),
     onEditEntry: (CredentialResponseEntity) -> Unit = {},
     onCopyPassword: (String) -> Unit = {},
-    onAddEntry : () -> Unit = {},
+    onAddEntry: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
 
     BaseScreen(modifier = modifier.fillMaxSize()) {
 
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
         ) {
 
-            LazyColumn(modifier = Modifier.padding(16.dp)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
                 items(items.size) { index ->
                     val item = items[index]
                     EntryItem(
@@ -90,7 +108,8 @@ fun HomeScreen(
             FloatingActionButton(
                 modifier = modifier
                     .wrapContentSize()
-                    .align(Alignment.End),
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 16.dp),
                 onClick = {
                     onAddEntry.invoke()
                 },

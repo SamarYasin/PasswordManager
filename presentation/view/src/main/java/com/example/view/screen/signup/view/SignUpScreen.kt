@@ -67,20 +67,21 @@ fun RouteSignUpScreen(
         }
     )
 
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
     ResultHandler(
         result = validationResult,
         onSuccess = {
             signUpViewModel.signUp()
         },
-        onError = {
+        onError = { model : SignUpValidationResult ->
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
-
+                    signUpViewModel.clearValidationError()
                 },
                 onConfirmation = {
-
+                    signUpViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
@@ -94,20 +95,21 @@ fun RouteSignUpScreen(
         }
     )
 
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
     ResultHandler(
         result = signUpResult,
         onSuccess = {
             onSignUpResult.invoke()
         },
-        onError = {
+        onError = { model : SignUpResult ->
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
-
+                    signUpViewModel.clearSignUpError()
                 },
                 onConfirmation = {
-
+                    signUpViewModel.clearSignUpError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"

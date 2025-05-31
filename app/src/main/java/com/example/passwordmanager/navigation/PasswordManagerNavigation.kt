@@ -1,10 +1,12 @@
 package com.example.passwordmanager.navigation
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.view.screen.addEntry.view.RouteAddEntryScreen
+import com.example.view.screen.editEntry.view.RouteEditEntryScreen
 import com.example.view.screen.forgetPassword.view.RouteForgotPasswordScreen
 import com.example.view.screen.home.view.RouteHomeScreen
 import com.example.view.screen.signin.view.RouteSignInScreen
@@ -14,7 +16,7 @@ import com.example.view.screen.signup.view.RouteSignUpScreen
 fun PasswordManagerNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Routes.SIGN_IN.route) {
         composable(Routes.SIGN_UP.route) {
-            RouteSignUpScreen (
+            RouteSignUpScreen(
                 onSignUpResult = {
                     navController.navigate(Routes.SIGN_IN.route)
                 },
@@ -24,7 +26,7 @@ fun PasswordManagerNavigation(navController: NavHostController) {
             )
         }
         composable(Routes.SIGN_IN.route) {
-            RouteSignInScreen (
+            RouteSignInScreen(
                 onSignInResult = {
                     navController.navigate(Routes.HOME.route)
                 },
@@ -46,10 +48,10 @@ fun PasswordManagerNavigation(navController: NavHostController) {
         composable(Routes.HOME.route) {
             RouteHomeScreen(
                 onEditEntry = {
-                    // Handle edit entry action
+                    navController.navigate(Routes.EDIT_ENTRY.route)
                 },
-                onCopyPassword = {
-                    // Handle copy password action
+                onAddEntry = {
+                    navController.navigate(Routes.ADD_ENTRY.route)
                 },
                 onLogout = {
                     // Handle logout action
@@ -63,8 +65,15 @@ fun PasswordManagerNavigation(navController: NavHostController) {
         }
         composable(Routes.ADD_ENTRY.route) {
             RouteAddEntryScreen(
-                onAddEntry = {
-                    // Handle add entry action
+                onMoveNext = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Routes.EDIT_ENTRY.route) {
+            RouteEditEntryScreen(
+                onMoveNext = {
+                    navController.popBackStack()
                 }
             )
         }

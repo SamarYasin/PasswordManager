@@ -10,37 +10,125 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.component.AppScreenTitleText
 import com.example.component.AppViewNameText
 import com.example.component.BaseScreen
 import com.example.component.EmailTextField
+import com.example.component.FullWidthButton
 import com.example.component.NameTextField
 import com.example.component.PasswordTextField
 import com.example.component.PhoneNumberTextField
-import com.example.domain.entity.CredentialResponseEntity
+import com.example.view.AddEntryResult
+import com.example.view.AddEntryValidationResult
+import com.example.view.ResultHandler
+import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.addEntry.model.AddEntryScreenModel
+import com.example.view.screen.addEntry.viewmodel.AddEntryViewModel
+import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun RouteAddEntryScreen(
     modifier: Modifier = Modifier,
-    onAddEntry: (CredentialResponseEntity) -> Unit = {}
+    addEntryViewModel: AddEntryViewModel = hiltViewModel(),
+    onMoveNext: () -> Unit = {}
 ) {
+
+    val validationResult by addEntryViewModel.validationResult.collectAsState(
+        initial = AddEntryValidationResult.Idle,
+        context = EmptyCoroutineContext
+    )
+
+    val addEntryResult by addEntryViewModel.addEntryResult.collectAsState(
+        initial = AddEntryResult.Idle,
+        context = EmptyCoroutineContext
+    )
+
     AddEntryScreen(
         modifier = modifier,
-        onAddEntry = onAddEntry
+        onNextBtnClick = { model: AddEntryScreenModel ->
+            addEntryViewModel.validateAddEntryForm(model)
+        }
     )
+
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
+    ResultHandler(
+        result = validationResult,
+        onSuccess = {
+            addEntryViewModel.addEntry()
+        },
+        onError = { model: AddEntryValidationResult ->
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+                    addEntryViewModel.clearValidationError()
+                },
+                onConfirmation = {
+                    addEntryViewModel.clearValidationError()
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        },
+        onLoading = {
+            // TODO: Attach Loader here
+        },
+        onIdle = {
+            // TODO: Do nothing on idle state
+        }
+    )
+
+    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
+    ResultHandler(
+        result = addEntryResult,
+        onSuccess = {
+            onMoveNext.invoke()
+        },
+        onError = { model: AddEntryResult ->
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+                    addEntryViewModel.clearAddEntryError()
+                },
+                onConfirmation = {
+                    addEntryViewModel.clearAddEntryError()
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        },
+        onLoading = {
+            // TODO: Attach Loader here
+        },
+        onIdle = {
+            // TODO: Do nothing on idle state
+        }
+    )
+
 }
 
 @Composable
 fun AddEntryScreen(
     modifier: Modifier = Modifier,
-    onNextBtnClick : (AddEntryScreenModel) -> Unit = {},
-    onAddEntry: (CredentialResponseEntity) -> Unit = {}
+    onNextBtnClick: (AddEntryScreenModel) -> Unit = {}
 ) {
+
+    var title by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
 
     BaseScreen(
         modifier = modifier
@@ -92,7 +180,7 @@ fun AddEntryScreen(
                     .height(42.dp),
                 hint = "Enter title",
                 onValueChange = {
-                    // Handle email input
+                    title = it
                 }
             )
 
@@ -121,7 +209,7 @@ fun AddEntryScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    name = it
                 }
             )
 
@@ -150,7 +238,7 @@ fun AddEntryScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    email = it
                 }
             )
 
@@ -179,7 +267,7 @@ fun AddEntryScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    password = it
                 }
             )
 
@@ -208,7 +296,31 @@ fun AddEntryScreen(
                     .fillMaxWidth()
                     .height(42.dp),
                 onValueChange = {
-                    // Handle email input
+                    phoneNumber = it
+                }
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.1F)
+            )
+
+            FullWidthButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(42.dp),
+                text = "Sign Up",
+                onClick = {
+                    onNextBtnClick.invoke(
+                        AddEntryScreenModel(
+                            title = title,
+                            name = name,
+                            email = email,
+                            password = password,
+                            phoneNumber = phoneNumber
+                        )
+                    )
                 }
             )
 
@@ -226,8 +338,8 @@ fun PreviewAddEntryScreen(
     AddEntryScreen(
         modifier = modifier
             .fillMaxSize(),
-        onAddEntry = {
-            // Handle add entry action
+        onNextBtnClick = {
+            // Handle next button click
         }
     )
 }

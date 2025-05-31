@@ -51,6 +51,34 @@ sealed class ForgetPasswordResult : UiResult {
     data object Idle : ForgetPasswordResult()
 }
 
+sealed class AddEntryValidationResult : UiResult {
+    data class Success(val message: String) : AddEntryValidationResult()
+    data class Error(val message: String) : AddEntryValidationResult()
+    data object Loading : AddEntryValidationResult()
+    data object Idle : AddEntryValidationResult()
+}
+
+sealed class AddEntryResult : UiResult {
+    data class Success(val message: String) : AddEntryResult()
+    data class Error(val message: String) : AddEntryResult()
+    data object Loading : AddEntryResult()
+    data object Idle : AddEntryResult()
+}
+
+sealed class EditEntryValidationResult : UiResult {
+    data class Success(val message: String) : EditEntryValidationResult()
+    data class Error(val message: String) : EditEntryValidationResult()
+    data object Loading : EditEntryValidationResult()
+    data object Idle : EditEntryValidationResult()
+}
+
+sealed class EditEntryResult : UiResult {
+    data class Success(val message: String) : EditEntryResult()
+    data class Error(val message: String) : EditEntryResult()
+    data object Loading : EditEntryResult()
+    data object Idle : EditEntryResult()
+}
+
 @Composable
 fun <T : UiResult> ResultHandler(
     result: T,
