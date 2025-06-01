@@ -79,18 +79,9 @@ sealed class EditEntryResult : UiResult {
     data object Idle : EditEntryResult()
 }
 
-@Composable
-fun <T : UiResult> ResultHandler(
-    result: T,
-    onSuccess: @Composable (T) -> Unit = {},
-    onError: @Composable (T) -> Unit = {},
-    onLoading: @Composable () -> Unit = {},
-    onIdle: @Composable () -> Unit = {},
-) {
-    when (result) {
-        is UiResult.Success<*> -> onSuccess(result)
-        is UiResult.Error<*> -> onError(result)
-        is UiResult.Loading -> onLoading()
-        is UiResult.Idle -> onIdle()
-    }
+sealed class DeleteEntryResult : UiResult {
+    data class Success(val message: String) : DeleteEntryResult()
+    data class Error(val message: String) : DeleteEntryResult()
+    data object Loading : DeleteEntryResult()
+    data object Idle : DeleteEntryResult()
 }

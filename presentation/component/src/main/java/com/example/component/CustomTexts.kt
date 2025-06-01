@@ -14,20 +14,8 @@ import com.example.style.appHintTextFontSize
 import com.example.style.appNameFontSize
 import com.example.style.appScreenTitleFontSize
 import com.example.style.appViewNameFontSize
-
-@Composable
-fun AppNameText(
-    modifier: Modifier = Modifier,
-    text: String = "Password Manager",
-    fontSize: TextUnit = appNameFontSize
-) {
-    Text(
-        text = text,
-        fontSize = fontSize,
-        modifier = modifier,
-        style = Typography.headlineLarge
-    )
-}
+import com.example.style.onPrimaryColor
+import com.example.style.onSecondaryColor
 
 @Composable
 fun AppScreenTitleText(
@@ -37,6 +25,7 @@ fun AppScreenTitleText(
 ) {
     Text(
         text = text,
+        color = onPrimaryColor,
         fontSize = fontSize,
         modifier = modifier,
         style = Typography.bodyLarge
@@ -51,6 +40,7 @@ fun AppViewNameText(
 ) {
     Text(
         text = text,
+        color = onPrimaryColor,
         fontSize = fontSize,
         modifier = modifier,
         style = Typography.bodyMedium
@@ -65,7 +55,7 @@ fun AppHintText(
 ) {
     Text(
         text = text,
-        color = Color.LightGray,
+        color = onSecondaryColor,
         fontSize = fontSize,
         modifier = modifier,
         style = Typography.bodyMedium
@@ -80,6 +70,7 @@ fun AppButtonText(
 ) {
     Text(
         text = text,
+        color = onSecondaryColor,
         fontSize = fontSize,
         modifier = modifier,
         style = Typography.titleMedium
@@ -94,6 +85,7 @@ fun AppHelperText(
 ) {
     Text(
         text = text,
+        color = onPrimaryColor,
         fontSize = fontSize,
         modifier = modifier,
         style = Typography.titleSmall
@@ -104,11 +96,6 @@ fun AppHelperText(
 @Preview(showBackground = true, showSystemUi = true, apiLevel = 34)
 fun PreviewTexts(modifier: Modifier = Modifier){
     Column {
-        AppNameText(
-            modifier = modifier,
-            text = "Password Manager",
-            fontSize = appNameFontSize
-        )
         AppScreenTitleText(
             modifier = modifier,
             text = "Password Manager",

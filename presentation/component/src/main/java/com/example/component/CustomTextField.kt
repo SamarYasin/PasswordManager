@@ -1,5 +1,6 @@
 package com.example.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.style.secondaryColor
 
 @Composable
 fun NameTextField(
@@ -36,7 +38,8 @@ fun NameTextField(
 ) {
     var name by remember { mutableStateOf("") }
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier
+            .background(color = secondaryColor, shape = RoundedCornerShape(12.dp)),
         value = name,
         onValueChange = {
             name = it
@@ -94,7 +97,8 @@ fun EmailTextField(
 ) {
     var email by remember { mutableStateOf("") }
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier
+            .background(color = secondaryColor, shape = RoundedCornerShape(12.dp)),
         value = email,
         onValueChange = {
             email = it
@@ -155,7 +159,8 @@ fun PasswordTextField(
     var passwordVisible by remember { mutableStateOf(false) }
 
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier
+            .background(color = secondaryColor, shape = RoundedCornerShape(12.dp)),
         value = password,
         onValueChange = {
             password = it
@@ -226,7 +231,8 @@ fun PhoneNumberTextField(
 ) {
     var phoneNumber by remember { mutableStateOf("") }
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier
+            .background(color = secondaryColor, shape = RoundedCornerShape(12.dp)),
         value = phoneNumber,
         onValueChange = {
             phoneNumber = it

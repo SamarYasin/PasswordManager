@@ -26,12 +26,6 @@ fun BaseScreen(
                 bottom = 16.dp
             )
     ) {
-        if (isLoading) {
-            // Show a loading indicator
-            CustomLoader(modifier)
-        } else {
-            // Show the actual content
-            content()
-        }
+        content()
     }
 }

@@ -1,6 +1,5 @@
 package com.example.passwordmanager.navigation
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -54,7 +53,6 @@ fun PasswordManagerNavigation(navController: NavHostController) {
                     navController.navigate(Routes.ADD_ENTRY.route)
                 },
                 onLogout = {
-                    // Handle logout action
                     navController.navigate(Routes.SIGN_IN.route) {
                         popUpTo(Routes.HOME.route) {
                             inclusive = true

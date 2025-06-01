@@ -8,14 +8,7 @@ import javax.inject.Inject
 class GetCredentialsUseCaseImpl @Inject constructor(
     private val getCredentialsRepo: GetCredentialsRepo
 ) : GetCredentialsUseCase {
-
-    /**
-     * Fetches the credentials from the repository.
-     *
-     * @return A list of credentials.
-     */
     override suspend fun getCredentials(): List<CredentialResponseEntity> {
         return getCredentialsRepo.getCredentials()
     }
-
 }

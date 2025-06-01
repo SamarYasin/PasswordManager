@@ -8,15 +8,7 @@ import javax.inject.Inject
 class UpdateCredentialUseCaseImpl @Inject constructor(
     private val updateCredentialRepo: UpdateCredentialRepo
 ) : UpdateCredentialUseCase {
-
-    /**
-     * Updates an existing credential in the repository.
-     *
-     * @param credential The credential to be updated.
-     * @return True if the update was successful, false otherwise.
-     */
-    override suspend fun updateCredential(credential: CredentialRequestEntity): Boolean {
-        return updateCredentialRepo.updateCredential(credential)
+    override suspend fun updateCredential(credential: CredentialRequestEntity) {
+        updateCredentialRepo.updateCredential(credential)
     }
-
 }

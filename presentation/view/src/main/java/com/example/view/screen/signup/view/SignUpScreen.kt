@@ -1,5 +1,6 @@
 package com.example.view.screen.signup.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,7 +32,7 @@ import com.example.component.FullWidthButton
 import com.example.component.NameTextField
 import com.example.component.PasswordTextField
 import com.example.component.PhoneNumberTextField
-import com.example.view.ResultHandler
+import com.example.style.primaryColor
 import com.example.view.SignUpResult
 import com.example.view.SignUpValidationResult
 import com.example.view.dialog.AlertDialogMessage
@@ -67,41 +68,49 @@ fun RouteSignUpScreen(
         }
     )
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    ResultHandler(
-        result = validationResult,
-        onSuccess = {
-            signUpViewModel.signUp()
-        },
-        onError = { model : SignUpValidationResult ->
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    signUpViewModel.clearValidationError()
-                },
-                onConfirmation = {
-                    signUpViewModel.clearValidationError()
-                },
-                dialogTitle = "Error",
-                dialogText = "An error occurred"
-            )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
+    when (validationResult) {
+        is SignUpValidationResult.Idle -> {
+            // Do nothing on idle state
         }
-    )
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    ResultHandler(
-        result = signUpResult,
-        onSuccess = {
+        is SignUpValidationResult.Loading -> {
+            // TODO: Attach Loader here
+        }
+
+        is SignUpValidationResult.Success -> {
+            signUpViewModel.signUp()
+        }
+
+        is SignUpValidationResult.Error -> {
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+                    signUpViewModel.clearValidationError()
+                },
+                onConfirmation = {
+                    signUpViewModel.clearValidationError()
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        }
+    }
+
+    when (signUpResult) {
+        is SignUpResult.Idle -> {
+            // Do nothing on idle state
+        }
+
+        is SignUpResult.Loading -> {
+            // TODO: Attach Loader here
+        }
+
+        is SignUpResult.Success -> {
             onSignUpResult.invoke()
-        },
-        onError = { model : SignUpResult ->
+        }
+
+        is SignUpResult.Error -> {
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
@@ -114,14 +123,8 @@ fun RouteSignUpScreen(
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
             )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
         }
-    )
+    }
 
 }
 
@@ -138,7 +141,9 @@ fun SignUpScreen(
     var confirmPassword by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
 
-    BaseScreen(modifier = modifier.fillMaxSize()) {
+    BaseScreen(modifier = modifier
+        .fillMaxSize()
+        .background(color = primaryColor)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -352,9 +357,7 @@ fun SignUpScreen(
             )
 
             FullWidthButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
+                modifier = Modifier,
                 text = "Sign Up",
                 onClick = {
                     onNextBtnClick.invoke(

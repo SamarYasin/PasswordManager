@@ -1,5 +1,6 @@
 package com.example.view.screen.editEntry.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,9 +29,9 @@ import com.example.component.FullWidthButton
 import com.example.component.NameTextField
 import com.example.component.PasswordTextField
 import com.example.component.PhoneNumberTextField
+import com.example.style.primaryColor
 import com.example.view.EditEntryResult
 import com.example.view.EditEntryValidationResult
-import com.example.view.ResultHandler
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.editEntry.model.EditEntryScreenModel
 import com.example.view.screen.editEntry.viewmodel.EditEntryViewModel
@@ -60,41 +61,42 @@ fun RouteEditEntryScreen(
         }
     )
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    ResultHandler(
-        result = validationResult,
-        onSuccess = {
-            editEntryViewModel.updateEntry()
-        },
-        onError = { model: EditEntryValidationResult ->
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    editEntryViewModel.clearValidationError()
-                },
-                onConfirmation = {
-                    editEntryViewModel.clearValidationError()
-                },
-                dialogTitle = "Error",
-                dialogText = "An error occurred"
-            )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
+    when(validationResult){
+        is EditEntryValidationResult.Idle -> {
+            // Do nothing on idle state
         }
-    )
+        is EditEntryValidationResult.Loading -> {
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    ResultHandler(
-        result = editEntryResult,
-        onSuccess = {
-            onMoveNext.invoke()
-        },
-        onError = { model: EditEntryResult ->
+        }
+        is EditEntryValidationResult.Error -> {
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+                    editEntryViewModel.clearValidationError()
+                },
+                onConfirmation = {
+                    editEntryViewModel.clearValidationError()
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        }
+        is EditEntryValidationResult.Success -> {
+            editEntryViewModel.updateEntry()
+        }
+    }
+
+    when(editEntryResult) {
+        is EditEntryResult.Idle -> {
+            // Do nothing on idle state
+        }
+
+        is EditEntryResult.Loading -> {
+
+        }
+
+        is EditEntryResult.Error -> {
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
@@ -107,14 +109,12 @@ fun RouteEditEntryScreen(
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
             )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
         }
-    )
+
+        is EditEntryResult.Success -> {
+            onMoveNext.invoke()
+        }
+    }
 
 }
 
@@ -133,6 +133,7 @@ fun EditEntryScreen(
     BaseScreen(
         modifier = modifier
             .fillMaxSize()
+            .background(primaryColor)
     ) {
 
         Column(
@@ -148,7 +149,7 @@ fun EditEntryScreen(
             )
 
             AppScreenTitleText(
-                text = "New Entry",
+                text = "Update Entry",
                 modifier = Modifier
                     .wrapContentSize()
                     .align(Alignment.CenterHorizontally)
@@ -307,10 +308,8 @@ fun EditEntryScreen(
             )
 
             FullWidthButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
-                text = "Sign Up",
+                modifier = Modifier,
+                text = "Next",
                 onClick = {
                     onNextBtnClick.invoke(
                         EditEntryScreenModel(

@@ -1,6 +1,8 @@
 package com.example.view.screen.editEntry.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.usecase.UpdateCredentialUseCase
 import com.example.view.EditEntryResult
 import com.example.view.EditEntryValidationResult
@@ -9,6 +11,7 @@ import com.example.view.validation.CustomValidationClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,11 +48,22 @@ class EditEntryViewModel @Inject constructor(
 
     // TODO: Fix it to handle actual sign-up logic
     fun updateEntry() {
-        if (_validationResult.value is EditEntryValidationResult.Success) {
-            // Simulate adding an entry
-            _editEntryResult.value = EditEntryResult.Success("Entry added successfully")
-        } else {
-            _editEntryResult.value = EditEntryResult.Error("Cannot add entry, validation failed")
+        viewModelScope.launch {
+            updateCredentialUseCase.updateCredential(
+                CredentialRequestEntity(
+                    entryName = _editEntryScreenModel.value.title,
+                    name = _editEntryScreenModel.value.name,
+                    email = _editEntryScreenModel.value.email,
+                    password = _editEntryScreenModel.value.password,
+                    mobileNumber = _editEntryScreenModel.value.phoneNumber
+                )
+            )
+        }.invokeOnCompletion { throwable ->
+            if (throwable == null) {
+                _editEntryResult.value = EditEntryResult.Success("Entry updated successfully")
+            } else {
+                _editEntryResult.value = EditEntryResult.Error("Failed to update entry: ${throwable.message}")
+            }
         }
     }
 

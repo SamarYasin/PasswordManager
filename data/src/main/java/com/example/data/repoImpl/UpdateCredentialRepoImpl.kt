@@ -9,19 +9,11 @@ import javax.inject.Inject
 class UpdateCredentialRepoImpl @Inject constructor(
     private val credentialDao: CredentialDao
 ) : UpdateCredentialRepo {
-
-    /**
-     * Updates an existing credential in the repository.
-     *
-     * @param credential The credential to be updated.
-     * @return True if the update was successful, false otherwise.
-     */
-    override suspend fun updateCredential(credential: CredentialRequestEntity): Boolean {
-        return try {
+    override suspend fun updateCredential(credential: CredentialRequestEntity) {
+        try {
             credentialDao.updateCredential(credential.map())
-            true
         } catch (e: Exception) {
-            false
+            e.message
         }
     }
 

@@ -20,8 +20,12 @@ class HomeViewModel @Inject constructor(
 
     fun getCredentials() {
         viewModelScope.launch {
-            // Fetch credentials from the use case
             _credentials.value = getCredentialsUseCase.getCredentials()
+        }.invokeOnCompletion { throwable ->
+            if (throwable != null) {
+                // Handle error, e.g., log it or show a message
+                _credentials.value = emptyList() // Reset to empty list on error
+            }
         }
     }
 

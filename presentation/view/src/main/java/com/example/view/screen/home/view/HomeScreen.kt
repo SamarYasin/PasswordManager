@@ -1,7 +1,7 @@
 package com.example.view.screen.home.view
 
 import android.widget.Toast
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,16 +18,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.component.BaseScreen
+import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.entity.CredentialResponseEntity
+import com.example.style.primaryColor
+import com.example.view.DeleteEntryResult
+import com.example.view.screen.home.viewmodel.DeleteEntryViewModel
 import com.example.view.screen.home.viewmodel.HomeViewModel
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -35,15 +38,20 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun RouteHomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
+    deleteEntryViewModel: DeleteEntryViewModel = hiltViewModel(),
     onEditEntry: (CredentialResponseEntity) -> Unit = {},
     onAddEntry: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
 
     val context = LocalContext.current
-    val clipboardManager: ClipboardManager = LocalClipboardManager.current
     val credentials by homeViewModel.credentials.collectAsState(
         initial = emptyList(),
+        context = EmptyCoroutineContext
+    )
+
+    val deleteEntryResult by deleteEntryViewModel.deleteEntryResult.collectAsState(
+        initial = DeleteEntryResult.Idle,
         context = EmptyCoroutineContext
     )
 
@@ -57,14 +65,36 @@ fun RouteHomeScreen(
         onEditEntry = onEditEntry,
         onLogout = onLogout,
         onAddEntry = onAddEntry,
-        onCopyPassword = { password : String ->
-            // TODO: Fix it to handle actual copy to clipboard logic
-             // This is a placeholder for the actual password copy logic
-             // You can use the ClipboardManager to copy the password to clipboard
-//            clipboardManager.setText(ClipEntry(password))
-             Toast.makeText(context, "Password copied to clipboard", Toast.LENGTH_SHORT).show()
+        onCopyPassword = { password: String ->
+
+            Toast.makeText(context, "Password copied to clipboard", Toast.LENGTH_SHORT).show()
+        },
+        onDeleteEntry = { credential: CredentialRequestEntity ->
+            deleteEntryViewModel.deleteEntry(credential)
         }
     )
+
+    when (deleteEntryResult) {
+        is DeleteEntryResult.Success -> {
+            Toast.makeText(context, "Entry deleted successfully", Toast.LENGTH_SHORT).show()
+        }
+
+        is DeleteEntryResult.Error -> {
+            Toast.makeText(
+                context,
+                "Failed to delete entry: ${(deleteEntryResult as DeleteEntryResult.Error).message}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        is DeleteEntryResult.Idle -> {
+            // Do nothing
+        }
+
+        is DeleteEntryResult.Loading -> {
+            // Show loading indicator if needed
+        }
+    }
 
 }
 
@@ -75,10 +105,13 @@ fun HomeScreen(
     onEditEntry: (CredentialResponseEntity) -> Unit = {},
     onCopyPassword: (String) -> Unit = {},
     onAddEntry: () -> Unit = {},
+    onDeleteEntry: (CredentialRequestEntity) -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
 
-    BaseScreen(modifier = modifier.fillMaxSize()) {
+    BaseScreen(modifier = modifier
+        .fillMaxSize()
+        .background(primaryColor)) {
 
         Box(
             modifier = Modifier
@@ -97,6 +130,17 @@ fun HomeScreen(
                         item = item,
                         onEditEntry = {
                             onEditEntry(item)
+                        },
+                        onDeleteEntry = {
+                            onDeleteEntry.invoke(
+                                CredentialRequestEntity(
+                                    entryName = item.entryName,
+                                    name = item.name,
+                                    email = item.email,
+                                    password = item.password,
+                                    mobileNumber = item.mobileNumber
+                                )
+                            )
                         },
                         onCopyPassword = {
                             onCopyPassword(item.password)
@@ -118,7 +162,7 @@ fun HomeScreen(
                 contentColor = FloatingActionButtonDefaults.containerColor,
                 elevation = FloatingActionButtonDefaults.elevation(8.dp)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
+                Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.Black )
             }
 
         }

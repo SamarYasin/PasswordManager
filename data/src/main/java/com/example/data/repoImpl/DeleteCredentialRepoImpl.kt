@@ -9,18 +9,12 @@ import javax.inject.Inject
 class DeleteCredentialRepoImpl @Inject constructor(
     private val credentialDao: CredentialDao
 ) : DeleteCredentialRepo {
-    /**
-     * Deletes a credential by its ID.
-     *
-     * @param credential The credential to delete.
-     * @return True if the deletion was successful, false otherwise.
-     */
-    override suspend fun deleteCredential(credential: CredentialRequestEntity): Boolean {
-        return try {
+    override suspend fun deleteCredential(credential: CredentialRequestEntity) {
+        try {
             credentialDao.deleteCredential(credential.map())
-            true
+
         } catch (e: Exception) {
-            false
+            e.message
         }
     }
 

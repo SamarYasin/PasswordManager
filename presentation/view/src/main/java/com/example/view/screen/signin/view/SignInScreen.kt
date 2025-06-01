@@ -1,5 +1,6 @@
 package com.example.view.screen.signin.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,7 @@ import com.example.component.BaseScreen
 import com.example.component.EmailTextField
 import com.example.component.FullWidthButton
 import com.example.component.PasswordTextField
-import com.example.view.ResultHandler
+import com.example.style.primaryColor
 import com.example.view.SignInResult
 import com.example.view.SignInValidationResult
 import com.example.view.dialog.AlertDialogMessage
@@ -62,71 +63,70 @@ fun RouteSignInScreen(
         onNavigateToSignUp = onNavigateToSignUp,
         onForgotPassword = onForgotPassword,
         onNextBtnClick = { signInScreenModel: SignInScreenModel ->
-//            signInViewModel.validateSignInForm(
-//                signInScreenModel
-//            )
-            onSignInResult.invoke()
+            signInViewModel.validateSignInForm(
+                signInScreenModel
+            )
         }
     )
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    if (validationResult is SignInValidationResult.Error || validationResult is SignInValidationResult.Success) {
-        ResultHandler(
-            result = validationResult,
-            onSuccess = {
-                signInViewModel.signIn()
-            },
-            onError = { model: SignInValidationResult ->
-                AlertDialogMessage(
-                    modifier = Modifier
-                        .wrapContentSize(),
-                    onDismissRequest = {
-                        signInViewModel.clearValidationError()
-                    },
-                    onConfirmation = {
-                        signInViewModel.clearValidationError()
-                    },
-                    dialogTitle = "Error",
-                    dialogText = "An error occurred"
-                )
-            },
-            onLoading = {
-                // TODO: Attach Loader here
-            },
-            onIdle = {
-                // TODO: Do nothing on idle state
-            }
-        )
+    when (validationResult) {
+        is SignInValidationResult.Idle -> {
+            // Do nothing on idle state
+        }
+
+        is SignInValidationResult.Loading -> {
+            // Show loading state if needed
+        }
+
+        is SignInValidationResult.Error -> {
+            AlertDialogMessage(
+                modifier = Modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+                    signInViewModel.clearValidationError()
+                },
+                onConfirmation = {
+                    signInViewModel.clearValidationError()
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        }
+
+        is SignInValidationResult.Success -> {
+            // Handle success state
+            signInViewModel.signIn()
+        }
     }
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    if (signInResult is SignInResult.Error || signInResult is SignInResult.Success) {
-        ResultHandler(
-            result = signInResult,
-            onSuccess = {
-                onSignInResult.invoke()
-            },
-            onError = { model: SignInResult ->
-                AlertDialogMessage(
-                    modifier = Modifier
-                        .wrapContentSize(),
-                    onDismissRequest = {
-                        signInViewModel.clearSignInError()
-                    },
-                    onConfirmation = {
-                        signInViewModel.clearSignInError()
-                    },
-                    dialogTitle = "Error",
-                    dialogText = "An error occurred"
-                )
-            },
-            onLoading = {
-                // TODO: Attach Loader here
-            },
-            onIdle = {
-                // TODO: Do nothing on idle state
-            }
-        )
+    when (signInResult) {
+        is SignInResult.Idle -> {
+            // Do nothing on idle state
+        }
+
+        is SignInResult.Loading -> {
+            // Show loading state if needed
+        }
+
+        is SignInResult.Error -> {
+            AlertDialogMessage(
+                modifier = Modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+                    signInViewModel.clearSignInError()
+                },
+                onConfirmation = {
+                    signInViewModel.clearSignInError()
+                },
+                dialogTitle = "Error",
+                dialogText = "An error occurred"
+            )
+        }
+
+        is SignInResult.Success -> {
+            // Handle success state
+            onSignInResult.invoke()
+        }
     }
 
 }
@@ -142,7 +142,9 @@ fun SignInScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    BaseScreen(modifier = modifier.fillMaxSize()) {
+    BaseScreen(modifier = modifier
+        .fillMaxSize()
+        .background(color = primaryColor)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -286,9 +288,7 @@ fun SignInScreen(
             )
 
             FullWidthButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
+                modifier = Modifier,
                 text = "Sign In",
                 onClick = {
                     onNextBtnClick.invoke(

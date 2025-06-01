@@ -4,6 +4,7 @@
 
     <application
         android:name=".PasswordManagerApplicationClass"
+        android:enableOnBackInvokedCallback="true"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@drawable/ic_app"

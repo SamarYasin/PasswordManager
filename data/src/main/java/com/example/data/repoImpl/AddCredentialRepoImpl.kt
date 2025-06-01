@@ -9,18 +9,12 @@ import javax.inject.Inject
 class AddCredentialRepoImpl @Inject constructor(
     private val credentialDao: CredentialDao
 ) : AddCredentialRepo {
-    /**
-     * Adds a new credential to the repository.
-     *
-     * @param credential The credential to be added.
-     * @return True if the addition was successful, false otherwise.
-     */
-    override suspend fun addCredential(credential: CredentialRequestEntity): Boolean {
-        return try {
+    override suspend fun addCredential(credential: CredentialRequestEntity) {
+        try {
             credentialDao.insertCredential(credential.map())
-            true
+
         } catch (e: Exception) {
-            false
+            e.message
         }
     }
 

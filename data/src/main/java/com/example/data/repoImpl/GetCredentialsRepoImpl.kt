@@ -9,12 +9,6 @@ import javax.inject.Inject
 class GetCredentialsRepoImpl @Inject constructor(
     private val credentialDao: CredentialDao
 ) : GetCredentialsRepo {
-
-    /**
-     * Fetches the credentials from the repository.
-     *
-     * @return A list of credentials.
-     */
     override suspend fun getCredentials(): List<CredentialResponseEntity> {
         return try {
             val list = credentialDao.getAllCredentials()

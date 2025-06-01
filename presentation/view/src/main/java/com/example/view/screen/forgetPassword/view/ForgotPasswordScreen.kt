@@ -1,5 +1,6 @@
 package com.example.view.screen.forgetPassword.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -26,11 +27,9 @@ import com.example.component.BaseScreen
 import com.example.component.EmailTextField
 import com.example.component.FullWidthButton
 import com.example.component.PhoneNumberTextField
+import com.example.style.primaryColor
 import com.example.view.ForgetPasswordResult
 import com.example.view.ForgetPasswordValidationResult
-import com.example.view.ResultHandler
-import com.example.view.SignInResult
-import com.example.view.SignUpValidationResult
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.forgetPassword.model.ForgotPasswordScreenModel
 import com.example.view.screen.forgetPassword.viewmodel.ForgetPasswordViewModel
@@ -62,41 +61,41 @@ fun RouteForgotPasswordScreen(
         }
     )
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    ResultHandler(
-        result = validationResult,
-        onSuccess = {
-            forgetPasswordViewModel.resetPassword()
-        },
-        onError = { model: ForgetPasswordValidationResult ->
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    forgetPasswordViewModel.clearValidationError()
-                },
-                onConfirmation = {
-                    forgetPasswordViewModel.clearValidationError()
-                },
-                dialogTitle = "Error",
-                dialogText = "An error occurred"
-            )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
+    when (validationResult) {
+        is ForgetPasswordValidationResult.Idle -> {
+            // Do nothing on idle state
         }
-    )
 
-    // TODO: Fix the logic behind showing Dialog, Right now not showing dialog when validation fails
-    ResultHandler(
-        result = forgotPasswordResult,
-        onSuccess = {
-            onNavigateToSignIn.invoke()
-        },
-        onError = { model: ForgetPasswordResult ->
+        is ForgetPasswordValidationResult.Error -> {
+            AlertDialogMessage(
+                modifier = modifier
+                    .wrapContentSize(),
+                onDismissRequest = {
+                    forgetPasswordViewModel.clearValidationError()
+                },
+                onConfirmation = {
+                    forgetPasswordViewModel.clearValidationError()
+                },
+                dialogTitle = "Error",
+                dialogText = "Please fill in all fields correctly"
+            )
+        }
+
+        is ForgetPasswordValidationResult.Success -> {
+            forgetPasswordViewModel.resetPassword()
+        }
+
+        is ForgetPasswordValidationResult.Loading -> {
+
+        }
+    }
+
+    when (forgotPasswordResult) {
+        is ForgetPasswordResult.Idle -> {
+            // Do nothing on idle state
+        }
+
+        is ForgetPasswordResult.Error -> {
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
@@ -107,16 +106,18 @@ fun RouteForgotPasswordScreen(
                     forgetPasswordViewModel.clearForgotPasswordError()
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred"
+                dialogText = "An error occurred while resetting your password"
             )
-        },
-        onLoading = {
-            // TODO: Attach Loader here
-        },
-        onIdle = {
-            // TODO: Do nothing on idle state
         }
-    )
+
+        is ForgetPasswordResult.Success -> {
+            onNavigateToSignIn.invoke()
+        }
+
+        is ForgetPasswordResult.Loading -> {
+            // Show loading state, e.g., display a progress indicator
+        }
+    }
 
 }
 
@@ -129,7 +130,7 @@ fun ForgotPasswordScreen(
     var email by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
 
-    BaseScreen(modifier = modifier.fillMaxSize()) {
+    BaseScreen(modifier = modifier.fillMaxSize().background(primaryColor)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -227,9 +228,7 @@ fun ForgotPasswordScreen(
             )
 
             FullWidthButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
+                modifier = Modifier,
                 text = "Sign In",
                 onClick = {
                     onNextBtnClick.invoke(
