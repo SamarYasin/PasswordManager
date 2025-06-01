@@ -3,7 +3,7 @@ package com.example.data.localDb
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
-@Database(entities = [Credential::class], version = 1, exportSchema = false)
+@Database(entities = [Credential::class], version = 1, exportSchema = true)
 abstract class PasswordManagerDataBase : RoomDatabase() {
     abstract fun credentialDao(): CredentialDao
 

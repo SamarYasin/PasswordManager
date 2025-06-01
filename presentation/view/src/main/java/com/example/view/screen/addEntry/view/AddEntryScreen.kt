@@ -112,7 +112,6 @@ fun RouteAddEntryScreen(
         }
 
         is AddEntryResult.Success -> {
-            // Handle success state, e.g., navigate to next screen
             onMoveNext.invoke()
         }
     }
@@ -312,6 +311,7 @@ fun AddEntryScreen(
                 modifier = Modifier,
                 text = "Next",
                 onClick = {
+                    // Validate and invoke the next button click with the collected data
                     onNextBtnClick.invoke(
                         AddEntryScreenModel(
                             title = title,
@@ -321,6 +321,13 @@ fun AddEntryScreen(
                             phoneNumber = phoneNumber
                         )
                     )
+
+                    // Reset fields after submission
+                    title = ""
+                    name = ""
+                    email = ""
+                    password = ""
+                    phoneNumber = ""
                 }
             )
 

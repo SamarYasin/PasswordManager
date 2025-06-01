@@ -311,6 +311,7 @@ fun EditEntryScreen(
                 modifier = Modifier,
                 text = "Next",
                 onClick = {
+                    // Validate and submit the form
                     onNextBtnClick.invoke(
                         EditEntryScreenModel(
                             title = title,
@@ -320,6 +321,13 @@ fun EditEntryScreen(
                             phoneNumber = phoneNumber
                         )
                     )
+
+                    // Reset fields after submission
+                    title = ""
+                    name = ""
+                    email = ""
+                    password = ""
+                    phoneNumber = ""
                 }
             )
 
