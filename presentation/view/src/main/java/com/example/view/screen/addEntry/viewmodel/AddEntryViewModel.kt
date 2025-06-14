@@ -46,7 +46,6 @@ class AddEntryViewModel @Inject constructor(
 
     }
 
-    // TODO: Fix it to handle actual sign-up logic
     fun addEntry() {
         viewModelScope.launch {
             addCredentialUseCase.addCredential(

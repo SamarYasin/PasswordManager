@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,7 +40,8 @@ fun EntryItem(
                 width = 1.dp,
                 color = Color.Gray,
                 shape = RoundedCornerShape(8.dp)
-            ).background(
+            )
+            .background(
                 color = secondaryColor, shape = RoundedCornerShape(8.dp)
             )
     ) {
@@ -51,51 +51,47 @@ fun EntryItem(
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
                 .wrapContentHeight(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+
             AppViewNameText(
                 text = item.entryName,
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(start = 26.dp)
+                    .fillMaxWidth(0.5F)
+                    .wrapContentHeight()
             )
 
-            Row(
+            ClickableIcons(
                 modifier = Modifier
-                    .padding(horizontal = 36.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                ClickableIcons(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .align(Alignment.CenterVertically),
-                    imageVector = R.drawable.ic_copy,
-                    onClick = {
-                        onCopyPassword.invoke()
-                    }
-                )
+                    .size(24.dp)
+                    .align(Alignment.CenterVertically),
+                imageVector = R.drawable.ic_copy,
+                onClick = {
+                    onCopyPassword.invoke()
+                }
+            )
 
-                ClickableIcons(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .align(Alignment.CenterVertically),
-                    imageVector = R.drawable.ic_edit,
-                    onClick = {
-                        onEditEntry.invoke()
-                    }
-                )
+            ClickableIcons(
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.CenterVertically),
+                imageVector = R.drawable.ic_edit,
+                onClick = {
+                    onEditEntry.invoke()
+                }
+            )
 
-                ClickableIcons(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .align(Alignment.CenterVertically),
-                    imageVector = R.drawable.ic_delete,
-                    onClick = {
-                        onDeleteEntry.invoke()
-                    }
-                )
-            }
+            ClickableIcons(
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.CenterVertically),
+                imageVector = R.drawable.ic_delete,
+                onClick = {
+                    onDeleteEntry.invoke()
+                }
+            )
+
         }
 
     }

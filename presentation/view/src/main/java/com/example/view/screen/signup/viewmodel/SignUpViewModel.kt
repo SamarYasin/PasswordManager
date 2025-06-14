@@ -2,7 +2,6 @@ package com.example.view.screen.signup.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.view.SignInResult
 import com.example.view.SignUpResult
 import com.example.view.SignUpValidationResult
 import com.example.view.screen.signup.model.SignUpScreenModel

@@ -1,5 +1,6 @@
 package com.example.view.screen.signup.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -62,6 +63,7 @@ fun RouteSignUpScreen(
         modifier = modifier,
         onNavigateToSignIn = onNavigateToSignIn,
         onNextBtnClick = { signUpScreenModel: SignUpScreenModel ->
+            Log.d("SignUpScreen", "onNextBtnClick: model: $signUpScreenModel")
             signUpViewModel.validateSignUpForm(
                 signUpScreenModel
             )
@@ -78,6 +80,7 @@ fun RouteSignUpScreen(
         }
 
         is SignUpValidationResult.Success -> {
+            Log.d("SignUpScreen", "Validation Success: Proceeding to sign up")
             signUpViewModel.signUp()
         }
 
@@ -86,9 +89,11 @@ fun RouteSignUpScreen(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("SignUpScreen", "Validation Error: result : $validationResult")
                     signUpViewModel.clearValidationError()
                 },
                 onConfirmation = {
+                    Log.d("SignUpScreen", "Validation Error: result : $validationResult")
                     signUpViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
@@ -107,6 +112,7 @@ fun RouteSignUpScreen(
         }
 
         is SignUpResult.Success -> {
+            Log.d("SignUpScreen", "Sign Up Success: Navigating to next screen")
             onSignUpResult.invoke()
         }
 
@@ -115,9 +121,11 @@ fun RouteSignUpScreen(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
                     signUpViewModel.clearSignUpError()
                 },
                 onConfirmation = {
+                    Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
                     signUpViewModel.clearSignUpError()
                 },
                 dialogTitle = "Error",
@@ -369,6 +377,12 @@ fun SignUpScreen(
                             phoneNumber = phoneNumber
                         )
                     )
+                    Log.d("Sign Up Screen", "SignUpScreen: onNextBtnClick: name: $name, email: $email, password: $password, confirmPassword: $confirmPassword, phoneNumber: $phoneNumber")
+                    name = ""
+                    email = ""
+                    password = ""
+                    confirmPassword = ""
+                    phoneNumber = ""
                 }
             )
 

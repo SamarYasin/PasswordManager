@@ -1,5 +1,7 @@
 package com.example.view.dialog
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.wrapContentSize
@@ -67,6 +69,7 @@ fun AlertDialogMessage(
                 modifier = Modifier
                     .wrapContentSize(),
                 onClick = {
+                    Log.d(TAG, "AlertDialogMessage: On Confirm Button Click")
                     onConfirmation()
                 }
             ) {
@@ -83,6 +86,7 @@ fun AlertDialogMessage(
                 modifier = Modifier
                     .wrapContentSize(),
                 onClick = {
+                    Log.d(TAG, "AlertDialogMessage: On Dismiss Button Click")
                     onDismissRequest()
                 }
             ) {

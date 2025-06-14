@@ -1,7 +1,7 @@
 package com.example.data.repoImpl
 
 import com.example.data.localDb.CredentialDao
-import com.example.data.mapper.map
+import com.example.data.mapper.listMapper
 import com.example.domain.entity.CredentialResponseEntity
 import com.example.domain.repo.GetCredentialsRepo
 import javax.inject.Inject
@@ -12,7 +12,7 @@ class GetCredentialsRepoImpl @Inject constructor(
     override suspend fun getCredentials(): List<CredentialResponseEntity> {
         return try {
             val list = credentialDao.getAllCredentials()
-            list.map { it.map() }
+            list.map { it.listMapper() }
         } catch (e: Exception) {
             emptyList()
         }

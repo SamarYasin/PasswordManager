@@ -1,5 +1,6 @@
 package com.example.view.screen.signin.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -63,6 +64,7 @@ fun RouteSignInScreen(
         onNavigateToSignUp = onNavigateToSignUp,
         onForgotPassword = onForgotPassword,
         onNextBtnClick = { signInScreenModel: SignInScreenModel ->
+            Log.d("SignInScreen", "onNextBtnClick: model: $signInScreenModel")
             signInViewModel.validateSignInForm(
                 signInScreenModel
             )
@@ -83,9 +85,11 @@ fun RouteSignInScreen(
                 modifier = Modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("SignInScreen", "Validation error dismissed")
                     signInViewModel.clearValidationError()
                 },
                 onConfirmation = {
+                    Log.d("SignInScreen", "Validation error confirmed")
                     signInViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
@@ -95,6 +99,7 @@ fun RouteSignInScreen(
 
         is SignInValidationResult.Success -> {
             // Handle success state
+            Log.d("SignInScreen", "Validation successful, proceeding to sign in")
             signInViewModel.signIn()
         }
     }
@@ -113,9 +118,11 @@ fun RouteSignInScreen(
                 modifier = Modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("SignInScreen", "Sign in error dismissed")
                     signInViewModel.clearSignInError()
                 },
                 onConfirmation = {
+                    Log.d("SignInScreen", "Sign in error confirmed")
                     signInViewModel.clearSignInError()
                 },
                 dialogTitle = "Error",
@@ -124,6 +131,7 @@ fun RouteSignInScreen(
         }
 
         is SignInResult.Success -> {
+            Log.d("SignInScreen", "Sign in successful, navigating to next screen")
             // Handle success state
             onSignInResult.invoke()
         }
@@ -297,6 +305,9 @@ fun SignInScreen(
                             password = password
                         )
                     )
+                    Log.d("SignInScreen", "Next button clicked with email: $email and password: $password")
+                    email = ""
+                    password = ""
                 }
             )
 

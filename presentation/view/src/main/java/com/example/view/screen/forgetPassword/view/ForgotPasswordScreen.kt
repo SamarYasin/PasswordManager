@@ -1,5 +1,6 @@
 package com.example.view.screen.forgetPassword.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -55,6 +56,7 @@ fun RouteForgotPasswordScreen(
     ForgotPasswordScreen(
         modifier = modifier,
         onNextBtnClick = { forgotPasswordScreenModel: ForgotPasswordScreenModel ->
+            Log.d("ForgotPasswordScreen", "onNextBtnClick: model: $forgotPasswordScreenModel")
             forgetPasswordViewModel.validateForgetPasswordForm(
                 forgotPasswordScreenModel
             )
@@ -71,9 +73,11 @@ fun RouteForgotPasswordScreen(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("ForgotPasswordScreen", "onDismissRequest: clearing validation error")
                     forgetPasswordViewModel.clearValidationError()
                 },
                 onConfirmation = {
+                    Log.d("ForgotPasswordScreen", "onConfirmation: clearing validation error")
                     forgetPasswordViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
@@ -82,6 +86,7 @@ fun RouteForgotPasswordScreen(
         }
 
         is ForgetPasswordValidationResult.Success -> {
+            Log.d("ForgotPasswordScreen", "Validation successful, proceeding to reset password")
             forgetPasswordViewModel.resetPassword()
         }
 
@@ -100,9 +105,11 @@ fun RouteForgotPasswordScreen(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("ForgotPasswordScreen", "onDismissRequest: clearing forgot password error")
                     forgetPasswordViewModel.clearForgotPasswordError()
                 },
                 onConfirmation = {
+                    Log.d("ForgotPasswordScreen", "onConfirmation: clearing forgot password error")
                     forgetPasswordViewModel.clearForgotPasswordError()
                 },
                 dialogTitle = "Error",
@@ -111,6 +118,7 @@ fun RouteForgotPasswordScreen(
         }
 
         is ForgetPasswordResult.Success -> {
+            Log.d("ForgotPasswordScreen", "Password reset successful, navigating to sign in")
             onNavigateToSignIn.invoke()
         }
 
@@ -237,6 +245,10 @@ fun ForgotPasswordScreen(
                             phoneNumber = phoneNumber
                         )
                     )
+                    // Log the email and phone number for debugging purposes
+                    Log.d("ForgotPasswordScreen", "onNextBtnClick: email: $email, phoneNumber: $phoneNumber")
+                    email = ""
+                    phoneNumber = ""
                 }
             )
 

@@ -1,5 +1,6 @@
 package com.example.view.screen.addEntry.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -57,6 +58,7 @@ fun RouteAddEntryScreen(
     AddEntryScreen(
         modifier = modifier,
         onNextBtnClick = { model: AddEntryScreenModel ->
+            Log.d("Add Entry Screen", "RouteAddEntryScreen: model: $model")
             addEntryViewModel.validateAddEntryForm(model)
         }
     )
@@ -83,6 +85,7 @@ fun RouteAddEntryScreen(
             )
         }
         is AddEntryValidationResult.Success -> {
+            Log.d("Add Entry Screen", "RouteAddEntryScreen: Adding entry")
             addEntryViewModel.addEntry()
         }
     }
@@ -101,9 +104,11 @@ fun RouteAddEntryScreen(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog dismissed")
                     addEntryViewModel.clearAddEntryError()
                 },
                 onConfirmation = {
+                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
                     addEntryViewModel.clearAddEntryError()
                 },
                 dialogTitle = "Error",
@@ -112,6 +117,8 @@ fun RouteAddEntryScreen(
         }
 
         is AddEntryResult.Success -> {
+            Log.d("Add Entry Screen", "RouteAddEntryScreen: Entry added successfully")
+            addEntryViewModel.clearAddEntryError()
             onMoveNext.invoke()
         }
     }
@@ -322,6 +329,7 @@ fun AddEntryScreen(
                         )
                     )
 
+                    Log.d("Add Entry Screen", "AddEntryScreen: onNextBtnClick invoked with model: $title, $name, $email, $password, $phoneNumber")
                     // Reset fields after submission
                     title = ""
                     name = ""

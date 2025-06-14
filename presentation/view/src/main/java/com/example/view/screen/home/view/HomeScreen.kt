@@ -1,5 +1,6 @@
 package com.example.view.screen.home.view
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,8 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,17 +65,20 @@ fun RouteHomeScreen(
         onLogout = onLogout,
         onAddEntry = onAddEntry,
         onCopyPassword = { password: String ->
-
+            Log.d("HomeScreen", "Copying password: $password")
             Toast.makeText(context, "Password copied to clipboard", Toast.LENGTH_SHORT).show()
         },
         onDeleteEntry = { credential: CredentialRequestEntity ->
+            Log.d("HomeScreen", "Deleting entry: $credential")
             deleteEntryViewModel.deleteEntry(credential)
         }
     )
 
     when (deleteEntryResult) {
         is DeleteEntryResult.Success -> {
+            Log.d("HomeScreen", "Entry deleted successfully")
             Toast.makeText(context, "Entry deleted successfully", Toast.LENGTH_SHORT).show()
+            homeViewModel.getCredentials()
         }
 
         is DeleteEntryResult.Error -> {
@@ -85,6 +87,7 @@ fun RouteHomeScreen(
                 "Failed to delete entry: ${(deleteEntryResult as DeleteEntryResult.Error).message}",
                 Toast.LENGTH_SHORT
             ).show()
+            Log.e("HomeScreen", "Error deleting entry: ${(deleteEntryResult as DeleteEntryResult.Error).message}")
         }
 
         is DeleteEntryResult.Idle -> {

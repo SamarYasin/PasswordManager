@@ -15,6 +15,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(
+            "String", "DB_PASSPHRASE",
+            "\"${project.findProperty("DB_PASSPHRASE") as String}\""
+        )
     }
 
     buildTypes {
@@ -39,6 +44,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     compileOptions {

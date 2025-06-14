@@ -1,5 +1,6 @@
 package com.example.view.screen.editEntry.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -57,37 +58,44 @@ fun RouteEditEntryScreen(
     EditEntryScreen(
         modifier = modifier,
         onNextBtnClick = { model: EditEntryScreenModel ->
+            Log.d("Edit Entry Screen", "RouteEditEntryScreen: model: $model")
             editEntryViewModel.validateEditEntryForm(model)
         }
     )
 
-    when(validationResult){
+    when (validationResult) {
         is EditEntryValidationResult.Idle -> {
             // Do nothing on idle state
         }
+
         is EditEntryValidationResult.Loading -> {
 
         }
+
         is EditEntryValidationResult.Error -> {
             AlertDialogMessage(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
                     editEntryViewModel.clearValidationError()
                 },
                 onConfirmation = {
+                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
                     editEntryViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
             )
         }
+
         is EditEntryValidationResult.Success -> {
+            Log.d("Edit Entry Screen", "RouteEditEntryScreen: Validation Success")
             editEntryViewModel.updateEntry()
         }
     }
 
-    when(editEntryResult) {
+    when (editEntryResult) {
         is EditEntryResult.Idle -> {
             // Do nothing on idle state
         }
@@ -101,9 +109,11 @@ fun RouteEditEntryScreen(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
+                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
                     editEntryViewModel.clearEditEntryError()
                 },
                 onConfirmation = {
+                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
                     editEntryViewModel.clearEditEntryError()
                 },
                 dialogTitle = "Error",
@@ -112,6 +122,8 @@ fun RouteEditEntryScreen(
         }
 
         is EditEntryResult.Success -> {
+            Log.d("Edit Entry Screen", "RouteEditEntryScreen: Edit Entry Success")
+            editEntryViewModel.clearEditEntryError()
             onMoveNext.invoke()
         }
     }
@@ -322,6 +334,10 @@ fun EditEntryScreen(
                         )
                     )
 
+                    Log.d(
+                        "Edit Entry Screen",
+                        "EditEntryScreen: onNextBtnClick: title: $title, name: $name, email: $email, password: $password, phoneNumber: $phoneNumber"
+                    )
                     // Reset fields after submission
                     title = ""
                     name = ""

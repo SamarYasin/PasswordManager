@@ -4,17 +4,30 @@ import com.example.data.localDb.Credential
 import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.entity.CredentialResponseEntity
 
-fun CredentialRequestEntity.map(): Credential {
+fun CredentialRequestEntity.addingMapper(): Credential {
     val credential = Credential()
     credential.entryName = this.entryName
     credential.name = this.name
     credential.email = this.email
     credential.password = this.password
     credential.mobileNumber = this.mobileNumber
+    credential.createdAt = System.currentTimeMillis()
+    credential.updatedAt = System.currentTimeMillis()
     return credential
 }
 
-fun Credential.map(): CredentialResponseEntity {
+fun CredentialRequestEntity.updatingMapper(): Credential {
+    val credential = Credential()
+    credential.entryName = this.entryName
+    credential.name = this.name
+    credential.email = this.email
+    credential.password = this.password
+    credential.mobileNumber = this.mobileNumber
+    credential.updatedAt = System.currentTimeMillis()
+    return credential
+}
+
+fun Credential.listMapper(): CredentialResponseEntity {
     return CredentialResponseEntity(
         entryName = this.entryName,
         name = this.name,
@@ -24,4 +37,14 @@ fun Credential.map(): CredentialResponseEntity {
         createdAt = this.createdAt,
         updatedAt = this.updatedAt
     )
+}
+
+fun CredentialRequestEntity.deletingMapper(): Credential {
+    val credential = Credential()
+    credential.entryName = this.entryName
+    credential.name = this.name
+    credential.email = this.email
+    credential.password = this.password
+    credential.mobileNumber = this.mobileNumber
+    return credential
 }
