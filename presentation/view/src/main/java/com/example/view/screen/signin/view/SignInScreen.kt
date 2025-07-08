@@ -305,9 +305,6 @@ fun SignInScreen(
                             password = password
                         )
                     )
-                    Log.d("SignInScreen", "Next button clicked with email: $email and password: $password")
-                    email = ""
-                    password = ""
                 }
             )
 

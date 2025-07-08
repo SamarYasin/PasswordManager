@@ -97,7 +97,7 @@ fun RouteSignUpScreen(
                     signUpViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred"
+                dialogText = (validationResult as SignUpValidationResult.Error).errorModel
             )
         }
     }
@@ -129,7 +129,7 @@ fun RouteSignUpScreen(
                     signUpViewModel.clearSignUpError()
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred"
+                dialogText = (signUpResult as SignUpResult.Error).errorModel
             )
         }
     }
@@ -377,12 +377,6 @@ fun SignUpScreen(
                             phoneNumber = phoneNumber
                         )
                     )
-                    Log.d("Sign Up Screen", "SignUpScreen: onNextBtnClick: name: $name, email: $email, password: $password, confirmPassword: $confirmPassword, phoneNumber: $phoneNumber")
-                    name = ""
-                    email = ""
-                    password = ""
-                    confirmPassword = ""
-                    phoneNumber = ""
                 }
             )
 

@@ -27,21 +27,39 @@ class SignUpViewModel @Inject constructor(
 
     fun validateSignUpForm(signUpScreenModel: SignUpScreenModel) {
         viewModelScope.launch {
-            _signUpScreenModel.value = signUpScreenModel
-            val isValid = customValidationClass.isNameValid(signUpScreenModel.name) &&
-                    customValidationClass.isEmailValid(signUpScreenModel.email) &&
-                    customValidationClass.isPasswordValid(signUpScreenModel.password) &&
-                    customValidationClass.isPasswordValid(signUpScreenModel.confirmPassword) &&
-                    customValidationClass.isPhoneNumberValid(signUpScreenModel.phoneNumber) &&
-                    signUpScreenModel.password == signUpScreenModel.confirmPassword
-
-            if (isValid) {
-                _validationResult.value =
-                    SignUpValidationResult.Success("Validation successful")
-            } else {
-                _validationResult.value =
-                    SignUpValidationResult.Error("Validation failed")
+            val nameValidation = customValidationClass.isNameValid(signUpScreenModel.name)
+            if(!nameValidation.validationIsSuccessful){
+                _validationResult.value = SignUpValidationResult.Error(nameValidation.validationMessage)
+                return@launch
             }
+            val emailValidation = customValidationClass.isEmailValid(signUpScreenModel.email)
+            if(!emailValidation.validationIsSuccessful){
+                _validationResult.value = SignUpValidationResult.Error(emailValidation.validationMessage)
+                return@launch
+            }
+            val passwordValidation = customValidationClass.isPasswordValid(signUpScreenModel.password)
+            if(!passwordValidation.validationIsSuccessful){
+                _validationResult.value = SignUpValidationResult.Error(passwordValidation.validationMessage)
+                return@launch
+            }
+            val confirmPasswordValidation = customValidationClass.isPasswordValid(signUpScreenModel.confirmPassword)
+            if(!confirmPasswordValidation.validationIsSuccessful){
+                _validationResult.value = SignUpValidationResult.Error(confirmPasswordValidation.validationMessage)
+                return@launch
+            }
+            val phoneNumberValidation = customValidationClass.isPhoneNumberValid(signUpScreenModel.phoneNumber)
+            if(!phoneNumberValidation.validationIsSuccessful){
+                _validationResult.value = SignUpValidationResult.Error(phoneNumberValidation.validationMessage)
+                return@launch
+            }
+            if(signUpScreenModel.password != signUpScreenModel.confirmPassword){
+                _validationResult.value = SignUpValidationResult.Error("Passwords do not match")
+                return@launch
+            }
+
+            _signUpScreenModel.value = signUpScreenModel
+            _validationResult.value =
+                SignUpValidationResult.Success("Validation successful")
         }
     }
 

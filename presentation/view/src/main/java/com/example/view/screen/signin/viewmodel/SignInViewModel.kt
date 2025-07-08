@@ -28,15 +28,19 @@ class SignInViewModel @Inject constructor(
 
     fun validateSignInForm(signInScreenModel: SignInScreenModel) {
         viewModelScope.launch {
-            _signInScreenModel.value = signInScreenModel
-            val isValid = customValidationClass.isEmailValid(signInScreenModel.email) &&
-                    customValidationClass.isPasswordValid(signInScreenModel.password)
-
-            if (isValid){
-                _validationResult.value = SignInValidationResult.Success("Validation successful")
-            } else {
-                _validationResult.value = SignInValidationResult.Error("Validation failed")
+            val emailValidation = customValidationClass.isEmailValid(signInScreenModel.email)
+            if(!emailValidation.validationIsSuccessful){
+                _validationResult.value = SignInValidationResult.Error(emailValidation.validationMessage)
+                return@launch
             }
+            val passwordValidation = customValidationClass.isPasswordValid(signInScreenModel.password)
+            if(!passwordValidation.validationIsSuccessful){
+                _validationResult.value = SignInValidationResult.Error(passwordValidation.validationMessage)
+                return@launch
+            }
+            _signInScreenModel.value = signInScreenModel
+            _validationResult.value =
+                SignInValidationResult.Success("Validation successful")
         }
     }
 
@@ -44,7 +48,6 @@ class SignInViewModel @Inject constructor(
     fun signIn() {
         viewModelScope.launch {
             if (_validationResult.value is SignInValidationResult.Success) {
-                // Simulate a sign-in process
                 _signInResult.value = SignInResult.Success("Sign-in successful")
             } else {
                 _signInResult.value = SignInResult.Error("Sign-in failed due to validation errors")

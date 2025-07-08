@@ -10,7 +10,6 @@ class Credential {
 
     // TODO: Check if i need mobile number and name
     var entryName: String = ""
-    var name: String = ""
     var password: String = ""
     var email: String = ""
     var mobileNumber: String = ""

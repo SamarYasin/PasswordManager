@@ -31,19 +31,36 @@ class EditEntryViewModel @Inject constructor(
     val editEntryResult: Flow<EditEntryResult> get() = _editEntryResult
 
     fun validateEditEntryForm(editEntryScreenModel: EditEntryScreenModel) {
-        _editEntryScreenModel.value = editEntryScreenModel
-        val isValid = customValidationClass.isNameValid(editEntryScreenModel.title) &&
-                customValidationClass.isNameValid(editEntryScreenModel.name) &&
-                customValidationClass.isEmailValid(editEntryScreenModel.email) &&
-                customValidationClass.isPasswordValid(editEntryScreenModel.password) &&
+        viewModelScope.launch {
+            val nameValidation = customValidationClass.isNameValid(editEntryScreenModel.title)
+            if (!nameValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    EditEntryValidationResult.Error(nameValidation.validationMessage)
+                return@launch
+            }
+            val emailValidation = customValidationClass.isEmailValid(editEntryScreenModel.email)
+            if (!emailValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    EditEntryValidationResult.Error(emailValidation.validationMessage)
+                return@launch
+            }
+            val passwordValidation =
+                customValidationClass.isPasswordValid(editEntryScreenModel.password)
+            if (!passwordValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    EditEntryValidationResult.Error(passwordValidation.validationMessage)
+                return@launch
+            }
+            val phoneNumberValidation =
                 customValidationClass.isPhoneNumberValid(editEntryScreenModel.phoneNumber)
-
-        if (isValid) {
+            if (!phoneNumberValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    EditEntryValidationResult.Error(phoneNumberValidation.validationMessage)
+                return@launch
+            }
+            _editEntryScreenModel.value = editEntryScreenModel
             _validationResult.value = EditEntryValidationResult.Success("Validation successful")
-        } else {
-            _validationResult.value = EditEntryValidationResult.Error("Validation failed")
         }
-
     }
 
     // TODO: Fix it to handle actual sign-up logic
@@ -52,18 +69,11 @@ class EditEntryViewModel @Inject constructor(
             updateCredentialUseCase.updateCredential(
                 CredentialRequestEntity(
                     entryName = _editEntryScreenModel.value.title,
-                    name = _editEntryScreenModel.value.name,
                     email = _editEntryScreenModel.value.email,
                     password = _editEntryScreenModel.value.password,
                     mobileNumber = _editEntryScreenModel.value.phoneNumber
                 )
             )
-        }.invokeOnCompletion { throwable ->
-            if (throwable == null) {
-                _editEntryResult.value = EditEntryResult.Success("Entry updated successfully")
-            } else {
-                _editEntryResult.value = EditEntryResult.Error("Failed to update entry: ${throwable.message}")
-            }
         }
     }
 

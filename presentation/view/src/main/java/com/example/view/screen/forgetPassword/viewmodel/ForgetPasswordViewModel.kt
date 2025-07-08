@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.view.ForgetPasswordResult
 import com.example.view.ForgetPasswordValidationResult
-import com.example.view.SignUpResult
 import com.example.view.screen.forgetPassword.model.ForgotPasswordScreenModel
 import com.example.view.validation.CustomValidationClass
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,15 +29,14 @@ class ForgetPasswordViewModel @Inject constructor(
 
     fun validateForgetPasswordForm(forgetPasswordScreenModel: ForgotPasswordScreenModel) {
         viewModelScope.launch {
-            _forgotPasswordScreenModel.value = forgetPasswordScreenModel
-            val isValid = customValidationClass.isEmailValid(forgetPasswordScreenModel.email) &&
-                    customValidationClass.isPhoneNumberValid(forgetPasswordScreenModel.phoneNumber)
-
-            if (isValid){
-                _validationResult.value = ForgetPasswordValidationResult.Success("Validation successful")
-            } else {
-                _validationResult.value = ForgetPasswordValidationResult.Error("Validation failed")
+            val emailValidation = customValidationClass.isEmailValid(forgetPasswordScreenModel.email)
+            if(!emailValidation.validationIsSuccessful){
+                _validationResult.value = ForgetPasswordValidationResult.Error(emailValidation.validationMessage)
+                return@launch
             }
+            _forgotPasswordScreenModel.value = forgetPasswordScreenModel
+            _validationResult.value =
+                ForgetPasswordValidationResult.Success("Validation successful")
         }
     }
 

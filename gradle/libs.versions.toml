@@ -1,20 +1,20 @@
 [versions]
 agp = "8.10.1"
 androidDatabaseSqlcipher = "4.5.4"
-hiltAndroid = "2.50"
+hiltAndroid = "2.56.2"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.0"
+lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
-androidxComposeBom = "2025.05.00"
+androidxComposeBom = "2025.06.01"
 navigationCompose = "2.9.0"
-roomRuntime = "2.7.1"
+roomRuntime = "2.7.2"
 ksp = "2.0.21-1.0.27"
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 jetbrainsKotlinJvm = "2.0.21"
 
 [libraries]
@@ -24,7 +24,6 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
@@ -51,3 +50,4 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndro
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+room = { id = "androidx.room", version.ref = "roomRuntime" }

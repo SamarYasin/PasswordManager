@@ -46,20 +46,6 @@ android {
 
     }
 
-    defaultConfig {
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments.putAll(
-                    mapOf(
-                        "room.schemaLocation" to "$projectDir/schemas".toString(),
-                        "room.incremental" to "true",
-                        "room.expandProjection" to "true"
-                    )
-                )
-            }
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

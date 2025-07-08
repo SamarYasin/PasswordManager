@@ -137,7 +137,6 @@ fun EditEntryScreen(
 ) {
 
     var title by remember { mutableStateOf("") }
-    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
@@ -194,35 +193,6 @@ fun EditEntryScreen(
                 hint = "Enter title",
                 onValueChange = {
                     title = it
-                }
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(20.dp)
-            )
-
-            AppViewNameText(
-                text = "Name",
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(start = 12.dp)
-                    .align(Alignment.Start)
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-            )
-
-            NameTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
-                onValueChange = {
-                    name = it
                 }
             )
 
@@ -327,23 +297,11 @@ fun EditEntryScreen(
                     onNextBtnClick.invoke(
                         EditEntryScreenModel(
                             title = title,
-                            name = name,
                             email = email,
                             password = password,
                             phoneNumber = phoneNumber
                         )
                     )
-
-                    Log.d(
-                        "Edit Entry Screen",
-                        "EditEntryScreen: onNextBtnClick: title: $title, name: $name, email: $email, password: $password, phoneNumber: $phoneNumber"
-                    )
-                    // Reset fields after submission
-                    title = ""
-                    name = ""
-                    email = ""
-                    password = ""
-                    phoneNumber = ""
                 }
             )
 

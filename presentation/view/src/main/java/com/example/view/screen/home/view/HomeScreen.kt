@@ -138,7 +138,6 @@ fun HomeScreen(
                             onDeleteEntry.invoke(
                                 CredentialRequestEntity(
                                     entryName = item.entryName,
-                                    name = item.name,
                                     email = item.email,
                                     password = item.password,
                                     mobileNumber = item.mobileNumber

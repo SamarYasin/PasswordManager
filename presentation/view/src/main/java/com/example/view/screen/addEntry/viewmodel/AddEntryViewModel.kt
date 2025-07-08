@@ -31,17 +31,35 @@ class AddEntryViewModel @Inject constructor(
     val addEntryResult: Flow<AddEntryResult> get() = _addEntryResult
 
     fun validateAddEntryForm(addEntryScreenModel: AddEntryScreenModel) {
-        _addEntryScreenModel.value = addEntryScreenModel
-        val isValid = customValidationClass.isNameValid(addEntryScreenModel.title) &&
-                customValidationClass.isNameValid(addEntryScreenModel.name) &&
-                customValidationClass.isEmailValid(addEntryScreenModel.email) &&
-                customValidationClass.isPasswordValid(addEntryScreenModel.password) &&
+        viewModelScope.launch {
+            val nameValidation = customValidationClass.isNameValid(addEntryScreenModel.title)
+            if (!nameValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    AddEntryValidationResult.Error(nameValidation.validationMessage)
+                return@launch
+            }
+            val emailValidation = customValidationClass.isEmailValid(addEntryScreenModel.email)
+            if (!emailValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    AddEntryValidationResult.Error(emailValidation.validationMessage)
+                return@launch
+            }
+            val passwordValidation =
+                customValidationClass.isPasswordValid(addEntryScreenModel.password)
+            if (!passwordValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    AddEntryValidationResult.Error(passwordValidation.validationMessage)
+                return@launch
+            }
+            val phoneNumberValidation =
                 customValidationClass.isPhoneNumberValid(addEntryScreenModel.phoneNumber)
-
-        if (isValid) {
+            if (!phoneNumberValidation.validationIsSuccessful) {
+                _validationResult.value =
+                    AddEntryValidationResult.Error(phoneNumberValidation.validationMessage)
+                return@launch
+            }
+            _addEntryScreenModel.value = addEntryScreenModel
             _validationResult.value = AddEntryValidationResult.Success("Validation successful")
-        } else {
-            _validationResult.value = AddEntryValidationResult.Error("Validation failed")
         }
 
     }
@@ -51,18 +69,11 @@ class AddEntryViewModel @Inject constructor(
             addCredentialUseCase.addCredential(
                 CredentialRequestEntity(
                     entryName = _addEntryScreenModel.value.title,
-                    name = _addEntryScreenModel.value.name,
                     email = _addEntryScreenModel.value.email,
                     password = _addEntryScreenModel.value.password,
                     mobileNumber = _addEntryScreenModel.value.phoneNumber
                 )
             )
-        }.invokeOnCompletion { throwable ->
-            if (throwable == null) {
-                _addEntryResult.value = AddEntryResult.Success("Entry added successfully")
-            } else {
-                _addEntryResult.value = AddEntryResult.Error("Failed to add entry: ${throwable.message}")
-            }
         }
     }
 

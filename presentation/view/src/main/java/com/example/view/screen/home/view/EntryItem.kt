@@ -105,7 +105,6 @@ fun PreviewEntryItem(modifier: Modifier = Modifier) {
         modifier = modifier,
         item = CredentialResponseEntity(
             entryName = "Sample Entry",
-            name = "Sample Entry",
             password = "Sample Password",
             email = "someone@gmail.com",
             mobileNumber = "1234567890",

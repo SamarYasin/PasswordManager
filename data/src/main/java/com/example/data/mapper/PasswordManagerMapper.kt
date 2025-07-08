@@ -7,7 +7,6 @@ import com.example.domain.entity.CredentialResponseEntity
 fun CredentialRequestEntity.addingMapper(): Credential {
     val credential = Credential()
     credential.entryName = this.entryName
-    credential.name = this.name
     credential.email = this.email
     credential.password = this.password
     credential.mobileNumber = this.mobileNumber
@@ -19,7 +18,6 @@ fun CredentialRequestEntity.addingMapper(): Credential {
 fun CredentialRequestEntity.updatingMapper(): Credential {
     val credential = Credential()
     credential.entryName = this.entryName
-    credential.name = this.name
     credential.email = this.email
     credential.password = this.password
     credential.mobileNumber = this.mobileNumber
@@ -30,7 +28,6 @@ fun CredentialRequestEntity.updatingMapper(): Credential {
 fun Credential.listMapper(): CredentialResponseEntity {
     return CredentialResponseEntity(
         entryName = this.entryName,
-        name = this.name,
         password = this.password,
         email = this.email,
         mobileNumber = this.mobileNumber,
@@ -42,7 +39,6 @@ fun Credential.listMapper(): CredentialResponseEntity {
 fun CredentialRequestEntity.deletingMapper(): Credential {
     val credential = Credential()
     credential.entryName = this.entryName
-    credential.name = this.name
     credential.email = this.email
     credential.password = this.password
     credential.mobileNumber = this.mobileNumber

@@ -245,10 +245,7 @@ fun ForgotPasswordScreen(
                             phoneNumber = phoneNumber
                         )
                     )
-                    // Log the email and phone number for debugging purposes
-                    Log.d("ForgotPasswordScreen", "onNextBtnClick: email: $email, phoneNumber: $phoneNumber")
-                    email = ""
-                    phoneNumber = ""
+
                 }
             )
 

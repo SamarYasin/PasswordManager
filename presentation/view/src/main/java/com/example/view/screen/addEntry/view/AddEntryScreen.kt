@@ -68,7 +68,7 @@ fun RouteAddEntryScreen(
             // Do nothing on idle state
         }
         is AddEntryValidationResult.Loading -> {
-
+            Log.d("Add Entry Screen", "RouteAddEntryScreen: Loading")
         }
         is AddEntryValidationResult.Error -> {
             AlertDialogMessage(
@@ -132,7 +132,6 @@ fun AddEntryScreen(
 ) {
 
     var title by remember { mutableStateOf("") }
-    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
@@ -189,35 +188,6 @@ fun AddEntryScreen(
                 hint = "Enter title",
                 onValueChange = {
                     title = it
-                }
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(20.dp)
-            )
-
-            AppViewNameText(
-                text = "Name",
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(start = 12.dp)
-                    .align(Alignment.Start)
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-            )
-
-            NameTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
-                onValueChange = {
-                    name = it
                 }
             )
 
@@ -322,20 +292,11 @@ fun AddEntryScreen(
                     onNextBtnClick.invoke(
                         AddEntryScreenModel(
                             title = title,
-                            name = name,
                             email = email,
                             password = password,
                             phoneNumber = phoneNumber
                         )
                     )
-
-                    Log.d("Add Entry Screen", "AddEntryScreen: onNextBtnClick invoked with model: $title, $name, $email, $password, $phoneNumber")
-                    // Reset fields after submission
-                    title = ""
-                    name = ""
-                    email = ""
-                    password = ""
-                    phoneNumber = ""
                 }
             )
 

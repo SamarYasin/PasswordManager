@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -42,6 +43,10 @@ android {
         }
     }
 
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
@@ -76,8 +81,8 @@ dependencies {
 
     implementation(libs.android.database.sqlcipher)
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
 
     implementation(project(":domain"))
 
