@@ -74,11 +74,9 @@ fun RouteForgotPasswordScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("ForgotPasswordScreen", "onDismissRequest: clearing validation error")
-                    forgetPasswordViewModel.clearValidationError()
                 },
                 onConfirmation = {
                     Log.d("ForgotPasswordScreen", "onConfirmation: clearing validation error")
-                    forgetPasswordViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
                 dialogText = "Please fill in all fields correctly"
@@ -106,11 +104,9 @@ fun RouteForgotPasswordScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("ForgotPasswordScreen", "onDismissRequest: clearing forgot password error")
-                    forgetPasswordViewModel.clearForgotPasswordError()
                 },
                 onConfirmation = {
                     Log.d("ForgotPasswordScreen", "onConfirmation: clearing forgot password error")
-                    forgetPasswordViewModel.clearForgotPasswordError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred while resetting your password"

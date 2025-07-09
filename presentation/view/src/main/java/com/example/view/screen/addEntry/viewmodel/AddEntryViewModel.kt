@@ -74,15 +74,8 @@ class AddEntryViewModel @Inject constructor(
                     mobileNumber = _addEntryScreenModel.value.phoneNumber
                 )
             )
+            _addEntryResult.value = AddEntryResult.Success("Entry added successfully")
         }
-    }
-
-    fun clearValidationError() {
-        _validationResult.value = AddEntryValidationResult.Idle
-    }
-
-    fun clearAddEntryError() {
-        _addEntryResult.value = AddEntryResult.Idle
     }
 
 }

@@ -75,10 +75,10 @@ fun RouteAddEntryScreen(
                 modifier = modifier
                     .wrapContentSize(),
                 onDismissRequest = {
-                    addEntryViewModel.clearValidationError()
+                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog dismissed")
                 },
                 onConfirmation = {
-                    addEntryViewModel.clearValidationError()
+                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
@@ -105,11 +105,9 @@ fun RouteAddEntryScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog dismissed")
-                    addEntryViewModel.clearAddEntryError()
                 },
                 onConfirmation = {
                     Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
-                    addEntryViewModel.clearAddEntryError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
@@ -118,7 +116,6 @@ fun RouteAddEntryScreen(
 
         is AddEntryResult.Success -> {
             Log.d("Add Entry Screen", "RouteAddEntryScreen: Entry added successfully")
-            addEntryViewModel.clearAddEntryError()
             onMoveNext.invoke()
         }
     }

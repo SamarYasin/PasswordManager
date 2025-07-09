@@ -55,12 +55,4 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun clearValidationError() {
-        _validationResult.value = SignInValidationResult.Idle
-    }
-
-    fun clearSignInError() {
-        _signInResult.value = SignInResult.Idle
-    }
-
 }

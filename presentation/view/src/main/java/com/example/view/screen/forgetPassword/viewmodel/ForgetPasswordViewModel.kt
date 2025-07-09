@@ -52,12 +52,4 @@ class ForgetPasswordViewModel @Inject constructor(
         }
     }
 
-    fun clearValidationError() {
-        _validationResult.value = ForgetPasswordValidationResult.Idle
-    }
-
-    fun clearForgotPasswordError() {
-        _forgotPasswordResult.value = ForgetPasswordResult.Idle
-    }
-
 }

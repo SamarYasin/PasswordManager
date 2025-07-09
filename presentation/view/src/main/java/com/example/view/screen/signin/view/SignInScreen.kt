@@ -86,11 +86,9 @@ fun RouteSignInScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("SignInScreen", "Validation error dismissed")
-                    signInViewModel.clearValidationError()
                 },
                 onConfirmation = {
                     Log.d("SignInScreen", "Validation error confirmed")
-                    signInViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
@@ -119,11 +117,9 @@ fun RouteSignInScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("SignInScreen", "Sign in error dismissed")
-                    signInViewModel.clearSignInError()
                 },
                 onConfirmation = {
                     Log.d("SignInScreen", "Sign in error confirmed")
-                    signInViewModel.clearSignInError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"

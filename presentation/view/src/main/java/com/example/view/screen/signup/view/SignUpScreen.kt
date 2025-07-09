@@ -90,11 +90,9 @@ fun RouteSignUpScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("SignUpScreen", "Validation Error: result : $validationResult")
-                    signUpViewModel.clearValidationError()
                 },
                 onConfirmation = {
                     Log.d("SignUpScreen", "Validation Error: result : $validationResult")
-                    signUpViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
                 dialogText = (validationResult as SignUpValidationResult.Error).errorModel
@@ -122,11 +120,9 @@ fun RouteSignUpScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
-                    signUpViewModel.clearSignUpError()
                 },
                 onConfirmation = {
                     Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
-                    signUpViewModel.clearSignUpError()
                 },
                 dialogTitle = "Error",
                 dialogText = (signUpResult as SignUpResult.Error).errorModel

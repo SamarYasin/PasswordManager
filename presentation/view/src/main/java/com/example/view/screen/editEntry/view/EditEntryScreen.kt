@@ -78,11 +78,9 @@ fun RouteEditEntryScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
-                    editEntryViewModel.clearValidationError()
                 },
                 onConfirmation = {
                     Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
-                    editEntryViewModel.clearValidationError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
@@ -110,11 +108,9 @@ fun RouteEditEntryScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
-                    editEntryViewModel.clearEditEntryError()
                 },
                 onConfirmation = {
                     Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
-                    editEntryViewModel.clearEditEntryError()
                 },
                 dialogTitle = "Error",
                 dialogText = "An error occurred"
@@ -123,7 +119,6 @@ fun RouteEditEntryScreen(
 
         is EditEntryResult.Success -> {
             Log.d("Edit Entry Screen", "RouteEditEntryScreen: Edit Entry Success")
-            editEntryViewModel.clearEditEntryError()
             onMoveNext.invoke()
         }
     }

@@ -23,13 +23,7 @@ class DeleteEntryViewModel @Inject constructor(
     fun deleteEntry(credentialId: CredentialRequestEntity) {
         viewModelScope.launch {
             deleteCredentialUseCase.deleteCredential(credentialId)
-        }.invokeOnCompletion { throwable ->
-            if (throwable == null) {
-                _deleteEntryResult.value = DeleteEntryResult.Success("Entry deleted successfully")
-            } else {
-                _deleteEntryResult.value =
-                    DeleteEntryResult.Error("Failed to Delete entry: ${throwable.message}")
-            }
+            _deleteEntryResult.value = DeleteEntryResult.Success("Entry deleted successfully")
         }
     }
 
