@@ -86,12 +86,13 @@ fun RouteSignInScreen(
                     .wrapContentSize(),
                 onDismissRequest = {
                     Log.d("SignInScreen", "Validation error dismissed")
+
                 },
                 onConfirmation = {
                     Log.d("SignInScreen", "Validation error confirmed")
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred"
+                dialogText = (validationResult as SignInValidationResult.Error).errorModel
             )
         }
 
@@ -122,7 +123,7 @@ fun RouteSignInScreen(
                     Log.d("SignInScreen", "Sign in error confirmed")
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred"
+                dialogText = (signInResult as SignInResult.Error).message
             )
         }
 

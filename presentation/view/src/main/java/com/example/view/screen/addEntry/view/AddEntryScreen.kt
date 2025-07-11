@@ -33,6 +33,7 @@ import com.example.component.PhoneNumberTextField
 import com.example.style.primaryColor
 import com.example.view.AddEntryResult
 import com.example.view.AddEntryValidationResult
+import com.example.view.EditEntryValidationResult
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.addEntry.model.AddEntryScreenModel
 import com.example.view.screen.addEntry.viewmodel.AddEntryViewModel
@@ -81,7 +82,7 @@ fun RouteAddEntryScreen(
                     Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred"
+                dialogText = (validationResult as AddEntryValidationResult.Error).message
             )
         }
         is AddEntryValidationResult.Success -> {
@@ -110,7 +111,7 @@ fun RouteAddEntryScreen(
                     Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred"
+                dialogText = (addEntryResult as AddEntryResult.Error).message
             )
         }
 

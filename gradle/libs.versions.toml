@@ -1,9 +1,9 @@
 [versions]
-agp = "8.10.1"
+agp = "8.11.1"
 androidDatabaseSqlcipher = "4.5.4"
 hiltAndroid = "2.56.2"
 hiltNavigationCompose = "1.2.0"
-kotlin = "2.0.21"
+kotlin = "2.2.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -11,14 +11,13 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
 androidxComposeBom = "2025.06.01"
-navigationCompose = "2.9.0"
+navigationCompose = "2.9.1"
 roomRuntime = "2.7.2"
-ksp = "2.0.21-1.0.27"
+ksp = "2.1.21-2.0.1"
 appcompat = "1.7.1"
-jetbrainsKotlinJvm = "2.0.21"
+jetbrainsKotlinJvm = "2.2.0"
 
 [libraries]
-#noinspection Aligned16KB
 android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "androidDatabaseSqlcipher" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }

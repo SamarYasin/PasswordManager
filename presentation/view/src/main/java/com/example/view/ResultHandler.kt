@@ -1,7 +1,5 @@
 package com.example.view
 
-import androidx.compose.runtime.*
-
 sealed interface UiResult {
     data object Idle : UiResult
     data object Loading : UiResult

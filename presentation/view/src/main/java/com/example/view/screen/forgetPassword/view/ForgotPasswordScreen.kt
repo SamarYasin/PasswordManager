@@ -79,7 +79,7 @@ fun RouteForgotPasswordScreen(
                     Log.d("ForgotPasswordScreen", "onConfirmation: clearing validation error")
                 },
                 dialogTitle = "Error",
-                dialogText = "Please fill in all fields correctly"
+                dialogText = (validationResult as ForgetPasswordValidationResult.Error).message
             )
         }
 
@@ -109,7 +109,7 @@ fun RouteForgotPasswordScreen(
                     Log.d("ForgotPasswordScreen", "onConfirmation: clearing forgot password error")
                 },
                 dialogTitle = "Error",
-                dialogText = "An error occurred while resetting your password"
+                dialogText = (forgotPasswordResult as ForgetPasswordResult.Error).message
             )
         }
 
