@@ -52,6 +52,7 @@ android {
     }
 
     kotlinOptions {
+        @Suppress("DEPRECATION")
         jvmTarget = "17"
     }
 

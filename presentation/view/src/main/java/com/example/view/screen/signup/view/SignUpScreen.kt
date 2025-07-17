@@ -40,6 +40,7 @@ import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.signup.model.SignUpScreenModel
 import com.example.view.screen.signup.viewmodel.SignUpViewModel
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.math.sign
 
 @Composable
 fun RouteSignUpScreen(
@@ -58,6 +59,7 @@ fun RouteSignUpScreen(
         initial = SignUpResult.Idle,
         context = EmptyCoroutineContext
     )
+    var signUpDialogVisible by remember { mutableStateOf(false) }
 
     SignUpScreen(
         modifier = modifier,
@@ -85,18 +87,25 @@ fun RouteSignUpScreen(
         }
 
         is SignUpValidationResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("SignUpScreen", "Validation Error: result : $validationResult")
-                },
-                onConfirmation = {
-                    Log.d("SignUpScreen", "Validation Error: result : $validationResult")
-                },
-                dialogTitle = "Error",
-                dialogText = (validationResult as SignUpValidationResult.Error).errorModel
-            )
+            signUpDialogVisible = true
+            if (signUpDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("SignUpScreen", "Validation Error: result : $validationResult")
+                        signUpDialogVisible = false
+                        signUpViewModel.clearValidationError()
+                    },
+                    onConfirmation = {
+                        Log.d("SignUpScreen", "Validation Error: result : $validationResult")
+                        signUpDialogVisible = false
+                        signUpViewModel.clearValidationError()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (validationResult as SignUpValidationResult.Error).errorModel
+                )
+            }
         }
     }
 
@@ -115,18 +124,25 @@ fun RouteSignUpScreen(
         }
 
         is SignUpResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
-                },
-                onConfirmation = {
-                    Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
-                },
-                dialogTitle = "Error",
-                dialogText = (signUpResult as SignUpResult.Error).errorModel
-            )
+            signUpDialogVisible = true
+            if (signUpDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
+                        signUpDialogVisible = false
+                        signUpViewModel.clearSignUpResult()
+                    },
+                    onConfirmation = {
+                        Log.d("SignUpScreen", "Sign Up Error: result : $signUpResult")
+                        signUpDialogVisible = false
+                        signUpViewModel.clearSignUpResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (signUpResult as SignUpResult.Error).errorModel
+                )
+            }
         }
     }
 
@@ -145,9 +161,11 @@ fun SignUpScreen(
     var confirmPassword by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
 
-    BaseScreen(modifier = modifier
-        .fillMaxSize()
-        .background(color = primaryColor)) {
+    BaseScreen(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = primaryColor)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

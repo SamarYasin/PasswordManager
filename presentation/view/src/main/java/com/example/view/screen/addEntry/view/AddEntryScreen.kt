@@ -56,6 +56,8 @@ fun RouteAddEntryScreen(
         context = EmptyCoroutineContext
     )
 
+    var addEntryDialogVisible by remember { mutableStateOf(false) }
+
     AddEntryScreen(
         modifier = modifier,
         onNextBtnClick = { model: AddEntryScreenModel ->
@@ -64,34 +66,42 @@ fun RouteAddEntryScreen(
         }
     )
 
-    when(validationResult){
+    when (validationResult) {
         is AddEntryValidationResult.Idle -> {
             // Do nothing on idle state
         }
+
         is AddEntryValidationResult.Loading -> {
             Log.d("Add Entry Screen", "RouteAddEntryScreen: Loading")
         }
+
         is AddEntryValidationResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog dismissed")
-                },
-                onConfirmation = {
-                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
-                },
-                dialogTitle = "Error",
-                dialogText = (validationResult as AddEntryValidationResult.Error).message
-            )
+            addEntryDialogVisible = true
+            if (addEntryDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog dismissed")
+                        addEntryViewModel.clearValidationResult()
+                    },
+                    onConfirmation = {
+                        Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
+                        addEntryViewModel.clearValidationResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (validationResult as AddEntryValidationResult.Error).message
+                )
+            }
         }
+
         is AddEntryValidationResult.Success -> {
             Log.d("Add Entry Screen", "RouteAddEntryScreen: Adding entry")
             addEntryViewModel.addEntry()
         }
     }
 
-    when(addEntryResult) {
+    when (addEntryResult) {
         is AddEntryResult.Idle -> {
             // Do nothing on idle state
         }
@@ -101,18 +111,23 @@ fun RouteAddEntryScreen(
         }
 
         is AddEntryResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog dismissed")
-                },
-                onConfirmation = {
-                    Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
-                },
-                dialogTitle = "Error",
-                dialogText = (addEntryResult as AddEntryResult.Error).message
-            )
+            addEntryDialogVisible = true
+            if (addEntryDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog dismissed")
+                        addEntryViewModel.clearAddEntryResult()
+                    },
+                    onConfirmation = {
+                        Log.d("Add Entry Screen", "RouteAddEntryScreen: Error dialog confirmed")
+                        addEntryViewModel.clearAddEntryResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (addEntryResult as AddEntryResult.Error).message
+                )
+            }
         }
 
         is AddEntryResult.Success -> {

@@ -3,6 +3,7 @@ package com.example.view.screen.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.CredentialRequestEntity
+import com.example.domain.usecase.DeleteAllCredentialsUseCase
 import com.example.domain.usecase.DeleteCredentialUseCase
 import com.example.view.DeleteEntryResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,8 +13,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DeleteEntryViewModel @Inject constructor(
-    private val deleteCredentialUseCase: DeleteCredentialUseCase
+class DeleteViewModel @Inject constructor(
+    private val deleteCredentialUseCase: DeleteCredentialUseCase,
+    private val deleteAllCredentialsUseCase: DeleteAllCredentialsUseCase
 ) : ViewModel() {
 
     private val _deleteEntryResult =
@@ -24,6 +26,13 @@ class DeleteEntryViewModel @Inject constructor(
         viewModelScope.launch {
             deleteCredentialUseCase.deleteCredential(credentialId)
             _deleteEntryResult.value = DeleteEntryResult.Success("Entry deleted successfully")
+        }
+    }
+
+    fun deleteDatabase() {
+        viewModelScope.launch {
+            deleteAllCredentialsUseCase.deleteAllCredential()
+            _deleteEntryResult.value = DeleteEntryResult.Success("All entries deleted successfully")
         }
     }
 

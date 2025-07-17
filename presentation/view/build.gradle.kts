@@ -41,6 +41,7 @@ android {
     }
 
     kotlinOptions {
+        @Suppress("DEPRECATION")
         jvmTarget = "17"
     }
 
@@ -67,6 +68,8 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation (libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.gson)
 
     implementation(project(":presentation:component"))
     implementation(project(":presentation:style"))

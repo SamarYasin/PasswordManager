@@ -9,16 +9,19 @@ import androidx.room.Update
 @Dao
 interface CredentialDao {
 
-     @Insert
-     suspend fun insertCredential(credential: Credential)
+    @Insert
+    suspend fun insertCredential(credential: Credential)
 
-     @Query("SELECT * FROM password_manager_db")
-     suspend fun getAllCredentials(): List<Credential>
+    @Query("SELECT * FROM password_manager_db")
+    suspend fun getAllCredentials(): List<Credential>
 
-     @Delete
-     suspend fun deleteCredential(credential: Credential)
+    @Delete
+    suspend fun deleteCredential(credential: Credential)
 
-     @Update
-     suspend fun updateCredential(credential: Credential)
+    @Update
+    suspend fun updateCredential(credential: Credential)
+
+    @Query("DELETE FROM password_manager_db")
+    suspend fun deleteAllCredentials()
 
 }

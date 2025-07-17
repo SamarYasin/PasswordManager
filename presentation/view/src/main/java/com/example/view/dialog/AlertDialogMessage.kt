@@ -24,6 +24,11 @@ import com.example.style.errorColor
 import com.example.style.primaryColor
 import com.example.style.secondaryColor
 
+/**
+ * https://developer.android.com/develop/ui/compose/components/dialog
+ * This the link for alert dialog documentation.
+ */
+
 @Composable
 fun AlertDialogMessage(
     modifier: Modifier = Modifier,

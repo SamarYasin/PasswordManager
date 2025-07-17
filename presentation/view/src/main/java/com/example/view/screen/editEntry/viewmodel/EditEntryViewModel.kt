@@ -78,4 +78,16 @@ class EditEntryViewModel @Inject constructor(
         }
     }
 
+    fun clearValidationResult() {
+        viewModelScope.launch {
+            _validationResult.value = EditEntryValidationResult.Idle
+        }
+    }
+
+    fun clearEditEntryResult() {
+        viewModelScope.launch {
+            _editEntryResult.value = EditEntryResult.Idle
+        }
+    }
+
 }

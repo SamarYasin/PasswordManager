@@ -29,7 +29,7 @@ import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.entity.CredentialResponseEntity
 import com.example.style.primaryColor
 import com.example.view.DeleteEntryResult
-import com.example.view.screen.home.viewmodel.DeleteEntryViewModel
+import com.example.view.screen.home.viewmodel.DeleteViewModel
 import com.example.view.screen.home.viewmodel.HomeViewModel
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -37,7 +37,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun RouteHomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    deleteEntryViewModel: DeleteEntryViewModel = hiltViewModel(),
+    deleteViewModel: DeleteViewModel = hiltViewModel(),
     onEditEntry: (CredentialResponseEntity) -> Unit = {},
     onAddEntry: () -> Unit = {},
     onLogout: () -> Unit = {}
@@ -49,7 +49,7 @@ fun RouteHomeScreen(
         context = EmptyCoroutineContext
     )
 
-    val deleteEntryResult by deleteEntryViewModel.deleteEntryResult.collectAsState(
+    val deleteEntryResult by deleteViewModel.deleteEntryResult.collectAsState(
         initial = DeleteEntryResult.Idle,
         context = EmptyCoroutineContext
     )
@@ -70,7 +70,7 @@ fun RouteHomeScreen(
         },
         onDeleteEntry = { credential: CredentialRequestEntity ->
             Log.d("HomeScreen", "Deleting entry: $credential")
-            deleteEntryViewModel.deleteEntry(credential)
+            deleteViewModel.deleteEntry(credential)
         }
     )
 

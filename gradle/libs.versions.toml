@@ -1,29 +1,33 @@
 [versions]
 agp = "8.11.1"
-androidDatabaseSqlcipher = "4.5.4"
-hiltAndroid = "2.56.2"
+androidDatabaseSqlcipher = "4.9.0"
+gson = "2.13.1"
+hiltAndroid = "2.57"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.2.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.1"
+lifecycleRuntimeKtx = "2.9.2"
 activityCompose = "1.10.1"
-androidxComposeBom = "2025.06.01"
-navigationCompose = "2.9.1"
+androidxComposeBom = "2025.07.00"
+navigationCompose = "2.9.2"
 roomRuntime = "2.7.2"
 ksp = "2.1.21-2.0.1"
 appcompat = "1.7.1"
 jetbrainsKotlinJvm = "2.2.0"
+sqlite = "2.5.2"
 
 [libraries]
-android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "androidDatabaseSqlcipher" }
+androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
+sqlcipher-android = { module = "net.zetetic:sqlcipher-android", version.ref = "androidDatabaseSqlcipher" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -40,6 +44,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

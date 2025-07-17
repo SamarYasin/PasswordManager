@@ -75,4 +75,16 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    fun clearValidationError() {
+        viewModelScope.launch {
+            _validationResult.value = SignUpValidationResult.Idle
+        }
+    }
+
+    fun clearSignUpResult() {
+        viewModelScope.launch {
+            _signUpResult.value = SignUpResult.Idle
+        }
+    }
+
 }

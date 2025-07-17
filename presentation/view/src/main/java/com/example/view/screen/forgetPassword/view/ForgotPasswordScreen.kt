@@ -53,6 +53,8 @@ fun RouteForgotPasswordScreen(
         context = EmptyCoroutineContext
     )
 
+    var forgotPasswordDialogVisible by remember { mutableStateOf(false) }
+
     ForgotPasswordScreen(
         modifier = modifier,
         onNextBtnClick = { forgotPasswordScreenModel: ForgotPasswordScreenModel ->
@@ -69,18 +71,26 @@ fun RouteForgotPasswordScreen(
         }
 
         is ForgetPasswordValidationResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("ForgotPasswordScreen", "onDismissRequest: clearing validation error")
-                },
-                onConfirmation = {
-                    Log.d("ForgotPasswordScreen", "onConfirmation: clearing validation error")
-                },
-                dialogTitle = "Error",
-                dialogText = (validationResult as ForgetPasswordValidationResult.Error).message
-            )
+            forgotPasswordDialogVisible = true
+            if (forgotPasswordDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("ForgotPasswordScreen", "onDismissRequest: clearing validation error")
+                        forgotPasswordDialogVisible = false
+                        forgetPasswordViewModel.clearValidationResult()
+                    },
+                    onConfirmation = {
+                        Log.d("ForgotPasswordScreen", "onConfirmation: clearing validation error")
+                        forgotPasswordDialogVisible = false
+                        forgetPasswordViewModel.clearValidationResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (validationResult as ForgetPasswordValidationResult.Error).message
+                )
+            }
+
         }
 
         is ForgetPasswordValidationResult.Success -> {
@@ -99,18 +109,32 @@ fun RouteForgotPasswordScreen(
         }
 
         is ForgetPasswordResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("ForgotPasswordScreen", "onDismissRequest: clearing forgot password error")
-                },
-                onConfirmation = {
-                    Log.d("ForgotPasswordScreen", "onConfirmation: clearing forgot password error")
-                },
-                dialogTitle = "Error",
-                dialogText = (forgotPasswordResult as ForgetPasswordResult.Error).message
-            )
+            forgotPasswordDialogVisible = true
+            if (forgotPasswordDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d(
+                            "ForgotPasswordScreen",
+                            "onDismissRequest: clearing forgot password error"
+                        )
+                        forgotPasswordDialogVisible = false
+                        forgetPasswordViewModel.clearForgotPasswordResult()
+                    },
+                    onConfirmation = {
+                        Log.d(
+                            "ForgotPasswordScreen",
+                            "onConfirmation: clearing forgot password error"
+                        )
+                        forgotPasswordDialogVisible = false
+                        forgetPasswordViewModel.clearForgotPasswordResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (forgotPasswordResult as ForgetPasswordResult.Error).message
+                )
+            }
+
         }
 
         is ForgetPasswordResult.Success -> {
@@ -134,7 +158,11 @@ fun ForgotPasswordScreen(
     var email by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
 
-    BaseScreen(modifier = modifier.fillMaxSize().background(primaryColor)) {
+    BaseScreen(
+        modifier = modifier
+            .fillMaxSize()
+            .background(primaryColor)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

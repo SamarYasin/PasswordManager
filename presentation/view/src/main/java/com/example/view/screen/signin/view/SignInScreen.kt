@@ -59,6 +59,8 @@ fun RouteSignInScreen(
         context = EmptyCoroutineContext
     )
 
+    var signInDialogVisible by remember { mutableStateOf(false) }
+
     SignInScreen(
         modifier = modifier,
         onNavigateToSignUp = onNavigateToSignUp,
@@ -81,19 +83,26 @@ fun RouteSignInScreen(
         }
 
         is SignInValidationResult.Error -> {
-            AlertDialogMessage(
-                modifier = Modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("SignInScreen", "Validation error dismissed")
+            signInDialogVisible = true
+            if (signInDialogVisible) {
+                AlertDialogMessage(
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("SignInScreen", "Validation error dismissed")
+                        signInDialogVisible = false
+                        signInViewModel.clearValidationError()
 
-                },
-                onConfirmation = {
-                    Log.d("SignInScreen", "Validation error confirmed")
-                },
-                dialogTitle = "Error",
-                dialogText = (validationResult as SignInValidationResult.Error).errorModel
-            )
+                    },
+                    onConfirmation = {
+                        Log.d("SignInScreen", "Validation error confirmed")
+                        signInDialogVisible = false
+                        signInViewModel.clearValidationError()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (validationResult as SignInValidationResult.Error).errorModel
+                )
+            }
         }
 
         is SignInValidationResult.Success -> {
@@ -113,18 +122,25 @@ fun RouteSignInScreen(
         }
 
         is SignInResult.Error -> {
-            AlertDialogMessage(
-                modifier = Modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("SignInScreen", "Sign in error dismissed")
-                },
-                onConfirmation = {
-                    Log.d("SignInScreen", "Sign in error confirmed")
-                },
-                dialogTitle = "Error",
-                dialogText = (signInResult as SignInResult.Error).message
-            )
+            signInDialogVisible = true
+            if (signInDialogVisible) {
+                AlertDialogMessage(
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("SignInScreen", "Sign in error dismissed")
+                        signInDialogVisible = false
+                        signInViewModel.clearSignInResult()
+                    },
+                    onConfirmation = {
+                        Log.d("SignInScreen", "Sign in error confirmed")
+                        signInDialogVisible = false
+                        signInViewModel.clearSignInResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (signInResult as SignInResult.Error).message
+                )
+            }
         }
 
         is SignInResult.Success -> {
@@ -147,9 +163,11 @@ fun SignInScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    BaseScreen(modifier = modifier
-        .fillMaxSize()
-        .background(color = primaryColor)) {
+    BaseScreen(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = primaryColor)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

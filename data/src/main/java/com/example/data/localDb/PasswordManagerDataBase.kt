@@ -5,22 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.data.BuildConfig
-import net.sqlcipher.database.SupportFactory
-import net.sqlcipher.database.SQLiteDatabase
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 
 @Database(entities = [Credential::class], version = 1, exportSchema = false)
 abstract class PasswordManagerDataBase : RoomDatabase() {
     abstract fun credentialDao(): CredentialDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: PasswordManagerDataBase? = null
+        @Volatile private var INSTANCE: PasswordManagerDataBase? = null
 
         fun getInstance(context: Context): PasswordManagerDataBase {
             return INSTANCE ?: synchronized(this) {
-                val passphrase: ByteArray = SQLiteDatabase.getBytes(
-                    BuildConfig.DB_PASSPHRASE.toCharArray())
-                val factory = SupportFactory(passphrase)
+                val passphrase: ByteArray = BuildConfig.DB_PASSPHRASE.toByteArray(Charsets.UTF_8)
+                val factory = SupportOpenHelperFactory(passphrase)
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     PasswordManagerDataBase::class.java,
@@ -33,5 +30,4 @@ abstract class PasswordManagerDataBase : RoomDatabase() {
             }
         }
     }
-
 }

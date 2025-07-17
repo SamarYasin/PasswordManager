@@ -10,6 +10,7 @@ import com.example.view.screen.addEntry.view.RouteAddEntryScreen
 import com.example.view.screen.editEntry.view.RouteEditEntryScreen
 import com.example.view.screen.forgetPassword.view.RouteForgotPasswordScreen
 import com.example.view.screen.home.view.RouteHomeScreen
+import com.example.view.screen.setting.view.RouteSettingScreen
 import com.example.view.screen.signin.view.RouteSignInScreen
 import com.example.view.screen.signup.view.RouteSignUpScreen
 
@@ -86,6 +87,11 @@ fun PasswordManagerNavigation(navController: NavHostController) {
                     Log.d(TAG, "PasswordManagerNavigation: Navigating back to Home Screen")
                     navController.popBackStack()
                 }
+            )
+        }
+        composable(Routes.SETTINGS.route) {
+            RouteSettingScreen(
+
             )
         }
     }

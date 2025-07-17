@@ -6,5 +6,6 @@ enum class Routes(val route: String) {
     FORGOT_PASSWORD("forgot_password"),
     HOME("home"),
     ADD_ENTRY("add_entry"),
-    EDIT_ENTRY("edit_entry")
+    EDIT_ENTRY("edit_entry"),
+    SETTINGS("settings")
 }

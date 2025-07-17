@@ -33,7 +33,6 @@ import com.example.component.PhoneNumberTextField
 import com.example.style.primaryColor
 import com.example.view.EditEntryResult
 import com.example.view.EditEntryValidationResult
-import com.example.view.ForgetPasswordValidationResult
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.editEntry.model.EditEntryScreenModel
 import com.example.view.screen.editEntry.viewmodel.EditEntryViewModel
@@ -56,6 +55,8 @@ fun RouteEditEntryScreen(
         context = EmptyCoroutineContext
     )
 
+    var editEntryDialogVisible by remember { mutableStateOf(false) }
+
     EditEntryScreen(
         modifier = modifier,
         onNextBtnClick = { model: EditEntryScreenModel ->
@@ -74,18 +75,26 @@ fun RouteEditEntryScreen(
         }
 
         is EditEntryValidationResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
-                },
-                onConfirmation = {
-                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
-                },
-                dialogTitle = "Error",
-                dialogText = (validationResult as EditEntryValidationResult.Error).message
-            )
+            editEntryDialogVisible = true
+            if (editEntryDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
+                        editEntryDialogVisible = false
+                        editEntryViewModel.clearValidationResult()
+                    },
+                    onConfirmation = {
+                        Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
+                        editEntryDialogVisible = false
+                        editEntryViewModel.clearValidationResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (validationResult as EditEntryValidationResult.Error).message
+                )
+            }
+
         }
 
         is EditEntryValidationResult.Success -> {
@@ -104,18 +113,26 @@ fun RouteEditEntryScreen(
         }
 
         is EditEntryResult.Error -> {
-            AlertDialogMessage(
-                modifier = modifier
-                    .wrapContentSize(),
-                onDismissRequest = {
-                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
-                },
-                onConfirmation = {
-                    Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
-                },
-                dialogTitle = "Error",
-                dialogText = (editEntryResult as EditEntryResult.Error).message
-            )
+            editEntryDialogVisible = true
+            if (editEntryDialogVisible) {
+                AlertDialogMessage(
+                    modifier = modifier
+                        .wrapContentSize(),
+                    onDismissRequest = {
+                        Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Dismissed")
+                        editEntryDialogVisible = false
+                        editEntryViewModel.clearEditEntryResult()
+                    },
+                    onConfirmation = {
+                        Log.d("Edit Entry Screen", "RouteEditEntryScreen: Error Dialog Confirmed")
+                        editEntryDialogVisible = false
+                        editEntryViewModel.clearEditEntryResult()
+                    },
+                    dialogTitle = "Error",
+                    dialogText = (editEntryResult as EditEntryResult.Error).message
+                )
+            }
+
         }
 
         is EditEntryResult.Success -> {

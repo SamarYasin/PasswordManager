@@ -58,6 +58,7 @@ android {
     }
 
     kotlinOptions {
+        @Suppress("DEPRECATION")
         jvmTarget = "17"
     }
 
@@ -79,10 +80,12 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
-    implementation(libs.android.database.sqlcipher)
+    implementation(libs.sqlcipher.android)
+    implementation(libs.androidx.sqlite)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
+    implementation(libs.gson)
 
     implementation(project(":domain"))
 
