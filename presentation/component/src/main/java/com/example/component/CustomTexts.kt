@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import com.example.style.Typography
 import com.example.style.appButtonTextFontSize
 import com.example.style.appHelperTextFontSize
 import com.example.style.appHintTextFontSize
-import com.example.style.appNameFontSize
 import com.example.style.appScreenTitleFontSize
 import com.example.style.appViewNameFontSize
 import com.example.style.onPrimaryColor

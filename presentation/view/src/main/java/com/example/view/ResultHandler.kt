@@ -1,5 +1,7 @@
 package com.example.view
 
+import com.example.domain.entity.CredentialResponseEntity
+
 sealed interface UiResult {
     data object Idle : UiResult
     data object Loading : UiResult
@@ -82,4 +84,18 @@ sealed class DeleteEntryResult : UiResult {
     data class Error(val message: String) : DeleteEntryResult()
     data object Loading : DeleteEntryResult()
     data object Idle : DeleteEntryResult()
+}
+
+sealed class DeleteDataBaseResult : UiResult {
+    data class Success(val message: String) : DeleteDataBaseResult()
+    data class Error(val message: String) : DeleteDataBaseResult()
+    data object Loading : DeleteDataBaseResult()
+    data object Idle : DeleteDataBaseResult()
+}
+
+sealed class AccessDataBaseResult : UiResult {
+    data class Success(val list: List<CredentialResponseEntity>) : AccessDataBaseResult()
+    data class Error(val message: String) : AccessDataBaseResult()
+    data object Loading : AccessDataBaseResult()
+    data object Idle : AccessDataBaseResult()
 }

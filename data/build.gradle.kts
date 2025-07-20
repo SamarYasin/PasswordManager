@@ -85,6 +85,9 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
+    // For Encryption in SharedPreferences
+    implementation(libs.androidx.security.crypto)
+
     implementation(libs.gson)
 
     implementation(project(":domain"))

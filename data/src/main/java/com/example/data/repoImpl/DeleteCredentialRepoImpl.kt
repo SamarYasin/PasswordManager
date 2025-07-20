@@ -1,6 +1,6 @@
 package com.example.data.repoImpl
 
-import com.example.data.localDb.CredentialDao
+import com.example.data.localDb.room.CredentialDao
 import com.example.data.mapper.deletingMapper
 import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.repo.DeleteCredentialRepo

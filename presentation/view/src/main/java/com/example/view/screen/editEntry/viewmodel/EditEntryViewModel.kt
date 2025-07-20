@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.usecase.UpdateCredentialUseCase
+import com.example.view.AddEntryResult
 import com.example.view.EditEntryResult
 import com.example.view.EditEntryValidationResult
 import com.example.view.screen.editEntry.model.EditEntryScreenModel
@@ -31,6 +32,7 @@ class EditEntryViewModel @Inject constructor(
     val editEntryResult: Flow<EditEntryResult> get() = _editEntryResult
 
     fun validateEditEntryForm(editEntryScreenModel: EditEntryScreenModel) {
+        _validationResult.value = EditEntryValidationResult.Loading
         viewModelScope.launch {
             val nameValidation = customValidationClass.isNameValid(editEntryScreenModel.title)
             if (!nameValidation.validationIsSuccessful) {
@@ -63,8 +65,8 @@ class EditEntryViewModel @Inject constructor(
         }
     }
 
-    // TODO: Fix it to handle actual sign-up logic
     fun updateEntry() {
+        _editEntryResult.value = EditEntryResult.Loading
         viewModelScope.launch {
             updateCredentialUseCase.updateCredential(
                 CredentialRequestEntity(

@@ -3,6 +3,7 @@ package com.example.view.screen.addEntry.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.CredentialRequestEntity
+import com.example.domain.entity.CredentialResponseEntity
 import com.example.domain.usecase.AddCredentialUseCase
 import com.example.view.AddEntryResult
 import com.example.view.AddEntryValidationResult
@@ -31,6 +32,7 @@ class AddEntryViewModel @Inject constructor(
     val addEntryResult: Flow<AddEntryResult> get() = _addEntryResult
 
     fun validateAddEntryForm(addEntryScreenModel: AddEntryScreenModel) {
+        _validationResult.value = AddEntryValidationResult.Loading
         viewModelScope.launch {
             val nameValidation = customValidationClass.isNameValid(addEntryScreenModel.title)
             if (!nameValidation.validationIsSuccessful) {
@@ -65,6 +67,7 @@ class AddEntryViewModel @Inject constructor(
     }
 
     fun addEntry() {
+        _addEntryResult.value = AddEntryResult.Loading
         viewModelScope.launch {
             addCredentialUseCase.addCredential(
                 CredentialRequestEntity(

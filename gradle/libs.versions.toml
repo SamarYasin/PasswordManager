@@ -17,9 +17,11 @@ roomRuntime = "2.7.2"
 ksp = "2.1.21-2.0.1"
 appcompat = "1.7.1"
 jetbrainsKotlinJvm = "2.2.0"
+securityCrypto = "1.1.0-beta01"
 sqlite = "2.5.2"
 
 [libraries]
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 sqlcipher-android = { module = "net.zetetic:sqlcipher-android", version.ref = "androidDatabaseSqlcipher" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,7 +46,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

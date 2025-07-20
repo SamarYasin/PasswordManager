@@ -40,7 +40,6 @@ import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.signup.model.SignUpScreenModel
 import com.example.view.screen.signup.viewmodel.SignUpViewModel
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.math.sign
 
 @Composable
 fun RouteSignUpScreen(

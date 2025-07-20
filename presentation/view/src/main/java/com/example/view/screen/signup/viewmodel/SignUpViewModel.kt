@@ -26,6 +26,7 @@ class SignUpViewModel @Inject constructor(
     val signUpResult: Flow<SignUpResult> get() = _signUpResult
 
     fun validateSignUpForm(signUpScreenModel: SignUpScreenModel) {
+        _validationResult.value = SignUpValidationResult.Loading
         viewModelScope.launch {
             val nameValidation = customValidationClass.isNameValid(signUpScreenModel.name)
             if(!nameValidation.validationIsSuccessful){
@@ -65,6 +66,7 @@ class SignUpViewModel @Inject constructor(
 
     // TODO: Fix it to handle actual sign-up logic
     fun signUp() {
+        _signUpResult.value = SignUpResult.Loading
         viewModelScope.launch {
             if (_validationResult.value is SignUpValidationResult.Success) {
                 // Simulate a sign-up process

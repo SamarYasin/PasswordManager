@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.usecase.DeleteAllCredentialsUseCase
 import com.example.domain.usecase.DeleteCredentialUseCase
+import com.example.view.DeleteDataBaseResult
 import com.example.view.DeleteEntryResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +23,12 @@ class DeleteViewModel @Inject constructor(
         MutableStateFlow<DeleteEntryResult>(DeleteEntryResult.Idle)
     val deleteEntryResult: Flow<DeleteEntryResult> get() = _deleteEntryResult
 
+    private val _deleteDataBaseResult =
+        MutableStateFlow<DeleteDataBaseResult>(DeleteDataBaseResult.Idle)
+    val deleteDataBaseResult: Flow<DeleteDataBaseResult> get() = _deleteDataBaseResult
+
     fun deleteEntry(credentialId: CredentialRequestEntity) {
+        _deleteEntryResult.value = DeleteEntryResult.Loading
         viewModelScope.launch {
             deleteCredentialUseCase.deleteCredential(credentialId)
             _deleteEntryResult.value = DeleteEntryResult.Success("Entry deleted successfully")
@@ -30,9 +36,10 @@ class DeleteViewModel @Inject constructor(
     }
 
     fun deleteDatabase() {
+        _deleteDataBaseResult.value = DeleteDataBaseResult.Loading
         viewModelScope.launch {
             deleteAllCredentialsUseCase.deleteAllCredential()
-            _deleteEntryResult.value = DeleteEntryResult.Success("All entries deleted successfully")
+            _deleteDataBaseResult.value = DeleteDataBaseResult.Success("All entries deleted successfully")
         }
     }
 

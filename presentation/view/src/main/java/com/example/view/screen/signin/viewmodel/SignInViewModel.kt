@@ -27,6 +27,7 @@ class SignInViewModel @Inject constructor(
     val signInResult: Flow<SignInResult> get() = _signInResult
 
     fun validateSignInForm(signInScreenModel: SignInScreenModel) {
+        _validationResult.value = SignInValidationResult.Loading
         viewModelScope.launch {
             val emailValidation = customValidationClass.isEmailValid(signInScreenModel.email)
             if (!emailValidation.validationIsSuccessful) {
@@ -49,6 +50,7 @@ class SignInViewModel @Inject constructor(
 
     // TODO: Fix it to handle actual sign-in logic
     fun signIn() {
+        _signInResult.value = SignInResult.Loading
         viewModelScope.launch {
             if (_validationResult.value is SignInValidationResult.Success) {
                 _signInResult.value = SignInResult.Success("Sign-in successful")

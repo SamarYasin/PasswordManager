@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +31,7 @@ import com.example.component.BaseScreen
 import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.entity.CredentialResponseEntity
 import com.example.style.primaryColor
+import com.example.view.AccessDataBaseResult
 import com.example.view.DeleteEntryResult
 import com.example.view.screen.home.viewmodel.DeleteViewModel
 import com.example.view.screen.home.viewmodel.HomeViewModel
@@ -45,7 +49,7 @@ fun RouteHomeScreen(
 
     val context = LocalContext.current
     val credentials by homeViewModel.credentials.collectAsState(
-        initial = emptyList(),
+        initial = AccessDataBaseResult.Idle,
         context = EmptyCoroutineContext
     )
 
@@ -54,13 +58,34 @@ fun RouteHomeScreen(
         context = EmptyCoroutineContext
     )
 
+    var credentialsList by remember { mutableStateOf(emptyList<CredentialResponseEntity>()) }
+
     LaunchedEffect(Unit) {
         homeViewModel.getCredentials()
     }
 
+    when (credentials) {
+        is AccessDataBaseResult.Idle -> {
+            // Do nothing on idle state
+        }
+
+        is AccessDataBaseResult.Loading -> {
+            // TODO: Attach Loader here
+        }
+
+        is AccessDataBaseResult.Success -> {
+            Log.d("SignUpScreen", "Validation Success: Proceeding to sign up")
+            credentialsList = (credentials as AccessDataBaseResult.Success).list
+        }
+
+        is AccessDataBaseResult.Error -> {
+            Log.d("SignUpScreen", "Sign Up Error: result : ${(credentials as AccessDataBaseResult.Error).message}")
+        }
+    }
+
     HomeScreen(
         modifier = modifier,
-        items = credentials,
+        items = credentialsList,
         onEditEntry = onEditEntry,
         onLogout = onLogout,
         onAddEntry = onAddEntry,

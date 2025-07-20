@@ -33,7 +33,6 @@ import com.example.component.PhoneNumberTextField
 import com.example.style.primaryColor
 import com.example.view.AddEntryResult
 import com.example.view.AddEntryValidationResult
-import com.example.view.EditEntryValidationResult
 import com.example.view.dialog.AlertDialogMessage
 import com.example.view.screen.addEntry.model.AddEntryScreenModel
 import com.example.view.screen.addEntry.viewmodel.AddEntryViewModel

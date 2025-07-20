@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.view.ForgetPasswordResult
 import com.example.view.ForgetPasswordValidationResult
+import com.example.view.SignInResult
 import com.example.view.screen.forgetPassword.model.ForgotPasswordScreenModel
 import com.example.view.validation.CustomValidationClass
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,7 @@ class ForgetPasswordViewModel @Inject constructor(
     val forgotPasswordResult: Flow<ForgetPasswordResult> get() = _forgotPasswordResult
 
     fun validateForgetPasswordForm(forgetPasswordScreenModel: ForgotPasswordScreenModel) {
+        _validationResult.value = ForgetPasswordValidationResult.Loading
         viewModelScope.launch {
             val emailValidation = customValidationClass.isEmailValid(forgetPasswordScreenModel.email)
             if(!emailValidation.validationIsSuccessful){
@@ -42,6 +44,7 @@ class ForgetPasswordViewModel @Inject constructor(
 
     // TODO: Fix it to handle actual sign-in logic
     fun resetPassword() {
+        _forgotPasswordResult.value = ForgetPasswordResult.Loading
         viewModelScope.launch {
             if (_validationResult.value is ForgetPasswordValidationResult.Success) {
                 // Simulate a password reset operation

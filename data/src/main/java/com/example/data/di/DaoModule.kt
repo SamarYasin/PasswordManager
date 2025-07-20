@@ -1,7 +1,7 @@
 package com.example.data.di
 
-import com.example.data.localDb.CredentialDao
-import com.example.data.localDb.PasswordManagerDataBase
+import com.example.data.localDb.room.CredentialDao
+import com.example.data.localDb.room.PasswordManagerDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

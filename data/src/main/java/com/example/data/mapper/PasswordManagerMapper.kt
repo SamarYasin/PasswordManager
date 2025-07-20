@@ -1,6 +1,6 @@
 package com.example.data.mapper
 
-import com.example.data.localDb.Credential
+import com.example.data.localDb.room.Credential
 import com.example.domain.entity.CredentialRequestEntity
 import com.example.domain.entity.CredentialResponseEntity
 
